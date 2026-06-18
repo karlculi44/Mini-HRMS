@@ -6,6 +6,7 @@ import { formatDate } from "../helpers/formatDate.js";
 function Employees() {
   const [employees, setEmployees] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [editingId, setEditingId] = useState(null);
   const [formData, setFormData] = useState({
     employee_id: "",
     full_name: "",
@@ -42,7 +43,14 @@ function Employees() {
     e.preventDefault();
 
     try {
-      await axios.post("http://localhost:5000/api/employees", formData);
+      if (editingId) {
+        await axios.put(
+          `http://localhost:5000/api/employees/${editingId}`,
+          formData,
+        );
+      } else {
+        await axios.post("http://localhost:5000/api/employees", formData);
+      }
 
       fetchEmployees();
 
@@ -63,13 +71,64 @@ function Employees() {
     }
   }
 
+  function handleEdit(employee) {
+    setEditingId(employee.id);
+
+    setFormData({
+      employee_id: employee.employee_id,
+      full_name: employee.full_name,
+      email: employee.email,
+      contact_number: employee.contact_number,
+      position: employee.position,
+      department: employee.department,
+      date_hired: employee.date_hired?.split("T")[0],
+      employment_status: employee.employment_status,
+    });
+
+    setShowModal(true);
+  }
+
+  async function deleteEmployee(id) {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this employee? This action can not be undone.",
+    );
+
+    if (!confirmed) return;
+
+    try {
+      await axios.delete(`http://localhost:5000/api/employees/${id}`);
+
+      fetchEmployees();
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  function handleCancelModal() {
+    setShowModal(false);
+    setEditingId(null);
+
+    setFormData({
+      employee_id: "",
+      full_name: "",
+      email: "",
+      contact_number: "",
+      position: "",
+      department: "",
+      date_hired: "",
+      employment_status: "Active",
+    });
+  }
+
   return (
     <div className="space-y-6">
       {/*Modal Component*/}
       {showModal && (
         <div className="fixed inset-0 bg-black/30 flex items-center justify-center">
           <div className="bg-white p-6 rounded-xl w-full max-w-2xl">
-            <h2 className="text-2xl font-bold mb-4">Add Employee</h2>
+            <h2 className="text-2xl font-bold mb-4">
+              {editingId ? "Edit Employee" : "Add Employee"}
+            </h2>
 
             <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-4">
               <input
@@ -143,7 +202,7 @@ function Employees() {
               <div className="col-span-2 flex justify-end gap-3">
                 <button
                   type="button"
-                  onClick={() => setShowModal(false)}
+                  onClick={handleCancelModal}
                   className="px-4 py-2 bg-gray-200 rounded-lg"
                 >
                   Cancel
@@ -153,7 +212,7 @@ function Employees() {
                   type="submit"
                   className="px-4 py-2 bg-blue-500 text-white rounded-lg"
                 >
-                  Save
+                  {editingId ? "Update" : "Save"}
                 </button>
               </div>
             </form>
@@ -203,12 +262,18 @@ function Employees() {
 
                   <td className="p-4">
                     <div className="flex gap-2">
-                      <button className="px-6 py-1 bg-yellow-500 text-white rounded-full hover:bg-yellow-600 cursor-pointer">
+                      <button
+                        onClick={() => handleEdit(employee)}
+                        className="px-6 py-1 bg-yellow-500 text-white rounded-full hover:bg-yellow-600 cursor-pointer"
+                      >
                         Edit
                       </button>
 
-                      <button className="px-6 py- bg-red-500 text-white rounded-full hover:bg-red-600 cursor-pointer">
-                        <Trash2 className="w-4" />
+                      <button
+                        onClick={() => deleteEmployee(employee.id)}
+                        className="p-2 bg-red-500 text-white rounded-full hover:bg-red-600 cursor-pointer"
+                      >
+                        <Trash2 className="w-4 h-4" />
                       </button>
                     </div>
                   </td>
