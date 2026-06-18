@@ -1,18 +1,35 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const Sidebar = () => {
-  return (
-    <div className="w-64 min-h-screen bg-gray-800 text-white p-5">
-      <h1 className="text-xl font-bold mb-8">HRMS</h1>
+  const linkClass = ({ isActive }) =>
+    `block px-4 py-2 rounded-lg ${isActive ? "bg-blue-500 text-white" : "text-gray-300 hover:bg-gray-700"}`;
 
-      <nav className="flex flex-col gap-4">
-        <Link to="/dashboard">Dashboard</Link>
-        <Link to="/employees">Employees</Link>
-        <Link to="/salaries">Salaries</Link>
-        <Link to="/attendance">Attendance</Link>
-        <Link to="/payroll">Payroll</Link>
+  return (
+    <aside className="w-64 min-h-screen bg-gray-800 p-4">
+      <h1 className="text-2xl font-bold text-white mb-8">HRMS</h1>
+
+      <nav className="space-y-2">
+        <NavLink to="/dashboard" className={linkClass}>
+          Dashboard
+        </NavLink>
+
+        <NavLink to="/employees" className={linkClass}>
+          Employees
+        </NavLink>
+
+        <NavLink to="/salaries" className={linkClass}>
+          Salaries
+        </NavLink>
+
+        <NavLink to="/attendance" className={linkClass}>
+          Attendance
+        </NavLink>
+
+        <NavLink to="/payroll" className={linkClass}>
+          Payroll
+        </NavLink>
       </nav>
-    </div>
+    </aside>
   );
 };
 

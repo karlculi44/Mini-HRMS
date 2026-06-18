@@ -1,5 +1,5 @@
 const Payroll = () => {
-  return <h1>Payroll</h1>;
+  return <h1 className="text-3xl font-bold">Payroll</h1>;
 };
 
 export default Payroll;
