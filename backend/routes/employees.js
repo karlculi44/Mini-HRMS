@@ -15,6 +15,24 @@ router.get("/", async (req, res) => {
   }
 });
 
+//get employee by id
+router.get("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const [employee] = await db.query("SELECT * FROM employees WHERE id = ?", [
+      id,
+    ]);
+    if (employee.length === 0) {
+      return res.status(404).json({ message: "Employee not found" });
+    }
+    return res.json(employee[0]);
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Failed to fetch employee", error: error.message });
+  }
+});
+
 //add new employee
 router.post("/", async (req, res) => {
   try {
@@ -115,11 +133,11 @@ router.put("/:id", async (req, res) => {
       return res.status(404).json({ message: "Employee not found" });
     }
 
-    res.json({
+    return res.json({
       message: "Employee updated successfully",
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       message: "Failed to update employee",
       error: error.message,
     });
@@ -137,11 +155,11 @@ router.delete("/:id", async (req, res) => {
       return res.status(404).json({ message: "Employee not found" });
     }
 
-    res.json({
+    return res.json({
       message: "Employee deleted successfully",
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       message: "Failed to delete employee",
       error: error.message,
     });

@@ -1,9 +1,8 @@
-import dotenv from "dotenv";
-dotenv.config();
 import express from "express";
 import cors from "cors";
 import authRoutes from "./routes/auth.js";
 import employeeRoutes from "./routes/employees.js";
+import salaryRoutes from "./routes/salaries.js";
 import db from "./db.js";
 
 const app = express();
@@ -15,6 +14,7 @@ app.use(express.json());
 // routes
 app.use("/api/auth", authRoutes);
 app.use("/api/employees", employeeRoutes);
+app.use("/api/salaries", salaryRoutes);
 
 app.get("/", (req, res) => {
   res.json({ message: "HRMS API running" });

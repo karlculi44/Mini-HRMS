@@ -23,7 +23,7 @@ router.post("/login", async (req, res) => {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    res.json({
+    return res.json({
       message: "Login successful",
       user: {
         id: users[0].id,
@@ -31,7 +31,9 @@ router.post("/login", async (req, res) => {
       },
     });
   } catch (err) {
-    res.status(500).json({ message: "Server error", error: err.message });
+    return res
+      .status(500)
+      .json({ message: "Server error", error: err.message });
   }
 });
 
