@@ -4,6 +4,7 @@ import authRoutes from "./routes/auth.js";
 import employeeRoutes from "./routes/employees.js";
 import salaryRoutes from "./routes/salaries.js";
 import attendanceRoutes from "./routes/attendance.js";
+import payrollRoutes from "./routes/payroll.js";
 import db from "./db.js";
 
 const app = express();
@@ -17,6 +18,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/employees", employeeRoutes);
 app.use("/api/salaries", salaryRoutes);
 app.use("/api/attendance", attendanceRoutes);
+app.use("/api/payroll", payrollRoutes);
 app.get("/", (req, res) => {
   res.json({ message: "HRMS API running" });
 });

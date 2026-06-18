@@ -54,12 +54,12 @@ router.post("/", async (req, res) => {
 });
 
 //update attendance
-router.put("/:id", async (req, res) => {
+router.put("/:employeeId", async (req, res) => {
   try {
-    const { id } = req.params;
+    const { employeeId } = req.params;
     const { attendance_date, time_in, time_out, status } = req.body;
     const [employee] = await db.query("SELECT id FROM employees WHERE id = ?", [
-      id,
+      employeeId,
     ]);
 
     if (employee.length === 0) {
@@ -78,7 +78,7 @@ router.put("/:id", async (req, res) => {
         status = ?
       WHERE employee_id = ?
       `,
-      [attendance_date, time_in, time_out, status, id],
+      [attendance_date, time_in, time_out, status, employeeId],
     );
 
     return res.json({
@@ -115,11 +115,11 @@ router.get("/", async (req, res) => {
 });
 
 //get attendance by employee id
-router.get("/:id", async (req, res) => {
+router.get("/:employeeId", async (req, res) => {
   try {
-    const { id } = req.params;
+    const { employeeId } = req.params;
     const [employee] = await db.query("SELECT id FROM employees WHERE id = ?", [
-      id,
+      employeeId,
     ]);
 
     if (employee.length === 0) {
@@ -139,7 +139,7 @@ router.get("/:id", async (req, res) => {
       WHERE a.employee_id = ?
       ORDER BY a.attendance_date DESC
       `,
-      [id],
+      [employeeId],
     );
 
     return res.json(attendance);
