@@ -94,9 +94,9 @@ router.get("/", async (req, res) => {
 });
 
 //get a salary by employee id
-router.get("/:employeeId", async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
-    const { employeeId } = req.params;
+    const { id } = req.params;
 
     const [salary] = await db.query(
       `
@@ -108,7 +108,7 @@ router.get("/:employeeId", async (req, res) => {
         ON s.employee_id = e.id
       WHERE s.employee_id = ?
       `,
-      [employeeId],
+      [id],
     );
 
     if (salary.length === 0) {

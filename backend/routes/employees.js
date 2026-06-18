@@ -22,9 +22,13 @@ router.get("/:id", async (req, res) => {
     const [employee] = await db.query("SELECT * FROM employees WHERE id = ?", [
       id,
     ]);
+
     if (employee.length === 0) {
-      return res.status(404).json({ message: "Employee not found" });
+      return res.status(404).json({
+        message: "Employee not found",
+      });
     }
+
     return res.json(employee[0]);
   } catch (error) {
     return res
