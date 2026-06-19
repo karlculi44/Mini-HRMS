@@ -137,7 +137,7 @@ function Employees() {
       )}
 
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Employees</h1>
+        <h1 className="text-3xl font-bold">Employee Management</h1>
 
         <button
           onClick={() => setShowModal(true)}

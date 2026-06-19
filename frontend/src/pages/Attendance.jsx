@@ -113,7 +113,7 @@ function Attendance() {
       )}
 
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Salary Management</h1>
+        <h1 className="text-3xl font-bold">Attendance Management</h1>
 
         <button
           onClick={() => setShowModal(true)}
