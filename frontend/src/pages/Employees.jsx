@@ -1,7 +1,13 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { Trash2 } from "lucide-react";
 import { formatDate } from "../helpers/formatDate.js";
+import {
+  getEmployees,
+  createEmployee,
+  updateEmployee,
+  removeEmployee,
+} from "../services/employeeServices.js";
+import EmployeeModal from "../components/EmployeeModal.jsx";
 
 function Employees() {
   const [employees, setEmployees] = useState([]);
@@ -18,15 +24,32 @@ function Employees() {
     employment_status: "Active",
   });
 
+  //Load employeed when page loads.
   useEffect(() => {
     fetchEmployees();
   }, []);
 
   async function fetchEmployees() {
     try {
-      const { data } = await axios.get("http://localhost:5000/api/employees");
+      const data = await getEmployees();
 
       setEmployees(data);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function deleteEmployee(id) {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this employee? This action can not be undone.",
+    );
+
+    if (!confirmed) return;
+
+    try {
+      await removeEmployee(id);
+
+      await fetchEmployees();
     } catch (error) {
       console.error(error);
     }
@@ -44,12 +67,9 @@ function Employees() {
 
     try {
       if (editingId) {
-        await axios.put(
-          `http://localhost:5000/api/employees/${editingId}`,
-          formData,
-        );
+        await updateEmployee(editingId, formData);
       } else {
-        await axios.post("http://localhost:5000/api/employees", formData);
+        await createEmployee(formData);
       }
 
       fetchEmployees();
@@ -81,30 +101,14 @@ function Employees() {
       contact_number: employee.contact_number,
       position: employee.position,
       department: employee.department,
-      date_hired: employee.date_hired?.split("T")[0],
+      date_hired: employee.date_hired,
       employment_status: employee.employment_status,
     });
 
     setShowModal(true);
   }
 
-  async function deleteEmployee(id) {
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this employee? This action can not be undone.",
-    );
-
-    if (!confirmed) return;
-
-    try {
-      await axios.delete(`http://localhost:5000/api/employees/${id}`);
-
-      fetchEmployees();
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  function handleCancelModal() {
+  function handleCloseModal() {
     setShowModal(false);
     setEditingId(null);
 
@@ -124,100 +128,13 @@ function Employees() {
     <div className="space-y-6">
       {/*Modal Component*/}
       {showModal && (
-        <div className="fixed inset-0 bg-black/30 flex items-center justify-center">
-          <div className="bg-white p-6 rounded-xl w-full max-w-2xl">
-            <h2 className="text-2xl font-bold mb-4">
-              {editingId ? "Edit Employee" : "Add Employee"}
-            </h2>
-
-            <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-4">
-              <input
-                name="employee_id"
-                placeholder="Employee ID"
-                value={formData.employee_id}
-                onChange={handleChange}
-                className="p-3 rounded-lg shadow-sm"
-              />
-
-              <input
-                name="full_name"
-                placeholder="Full Name"
-                value={formData.full_name}
-                onChange={handleChange}
-                className="p-3 rounded-lg shadow-sm"
-              />
-
-              <input
-                name="email"
-                placeholder="Email"
-                value={formData.email}
-                onChange={handleChange}
-                className="p-3 rounded-lg shadow-sm"
-              />
-
-              <input
-                name="contact_number"
-                placeholder="Contact Number"
-                value={formData.contact_number}
-                onChange={handleChange}
-                className="p-3 rounded-lg shadow-sm"
-              />
-
-              <input
-                name="position"
-                placeholder="Position"
-                value={formData.position}
-                onChange={handleChange}
-                className="p-3 rounded-lg shadow-sm"
-              />
-
-              <input
-                name="department"
-                placeholder="Department"
-                value={formData.department}
-                onChange={handleChange}
-                className="p-3 rounded-lg shadow-sm"
-              />
-
-              <input
-                type="date"
-                name="date_hired"
-                value={formData.date_hired}
-                onChange={handleChange}
-                className="p-3 rounded-lg shadow-sm"
-              />
-
-              <select
-                name="employment_status"
-                value={formData.employment_status}
-                onChange={handleChange}
-                className="p-3 rounded-lg shadow-sm"
-              >
-                <option>Active</option>
-                <option>Offline</option>
-                <option>On Leave</option>
-                <option>Resigned</option>
-              </select>
-
-              <div className="col-span-2 flex justify-end gap-3">
-                <button
-                  type="button"
-                  onClick={handleCancelModal}
-                  className="px-4 py-2 bg-gray-200 rounded-lg"
-                >
-                  Cancel
-                </button>
-
-                <button
-                  type="submit"
-                  className="px-4 py-2 bg-blue-500 text-white rounded-lg"
-                >
-                  {editingId ? "Update" : "Save"}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
+        <EmployeeModal
+          editingId={editingId}
+          formData={formData}
+          handleChange={handleChange}
+          handleSubmit={handleSubmit}
+          handleCloseModal={handleCloseModal}
+        />
       )}
 
       <div className="flex justify-between items-center">

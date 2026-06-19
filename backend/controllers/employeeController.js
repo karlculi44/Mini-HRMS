@@ -3,7 +3,12 @@ import db from "../db.js";
 //GET ALL EMPLOYEES
 export const getAllEmployees = async (req, res) => {
   try {
-    const [employees] = await db.query("SELECT * FROM employees");
+    const [employees] = await db.query(`
+  SELECT
+    *,
+    DATE_FORMAT(date_hired, '%Y-%m-%d') AS date_hired
+  FROM employees
+`);
     res.json(employees);
   } catch (error) {
     res
