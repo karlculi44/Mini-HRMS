@@ -4,14 +4,15 @@ import db from "../db.js";
 export const getAllAttendance = async (req, res) => {
   try {
     const [attendance] = await db.query(`
-      SELECT
-        a.*,
-        e.full_name
-      FROM attendance a
-      JOIN employees e
-        ON a.employee_id = e.id
-      ORDER BY a.attendance_date DESC
-    `);
+  SELECT
+    a.*,
+    DATE_FORMAT(a.attendance_date, '%Y-%m-%d') AS attendance_date,
+    e.full_name
+  FROM attendance a
+  JOIN employees e
+    ON a.employee_id = e.id
+  ORDER BY a.attendance_date DESC
+`);
 
     return res.json(attendance);
   } catch (error) {

@@ -111,6 +111,7 @@ function Salaries() {
           Add Salary
         </button>
       </div>
+
       <div className="bg-white rounded-xl shadow-sm overflow-x-auto">
         <table className="w-full">
           <thead className="bg-gray-100">
