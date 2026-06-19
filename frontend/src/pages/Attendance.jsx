@@ -30,7 +30,6 @@ function Attendance() {
   async function fetchAttendance() {
     try {
       const data = await getAttendance();
-      console.log(data);
       setAttendance(data);
     } catch (error) {
       console.error(error);
