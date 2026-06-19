@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { formatCurrency } from "../helpers/formatCurrency";
-import axios from "axios";
+import { getDashboardStats } from "../services/dashboardServices";
 
 function Dashboard() {
   const [stats, setStats] = useState({
@@ -13,7 +13,7 @@ function Dashboard() {
   useEffect(() => {
     async function fetchDashboardStats() {
       try {
-        const { data } = await axios.get("http://localhost:5000/api/dashboard");
+        const data = await getDashboardStats();
 
         setStats(data);
       } catch (error) {
