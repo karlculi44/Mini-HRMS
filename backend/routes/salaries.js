@@ -10,6 +10,5 @@ const router = express.Router();
 
 router.post("/", saveSalary);
 router.get("/", getSalaries);
-router.get("/:employeeId", getSalaryByEmployeeId);
 
 export default router;

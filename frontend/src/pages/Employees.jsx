@@ -104,7 +104,6 @@ function Employees() {
       date_hired: employee.date_hired,
       employment_status: employee.employment_status,
     });
-
     setShowModal(true);
   }
 

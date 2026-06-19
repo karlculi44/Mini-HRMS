@@ -1,6 +1,11 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { formatCurrency } from "../helpers/formatCurrency.js";
+import { getEmployees } from "../services/employeeServices.js";
+import SalaryModal from "../components/SalaryModal.jsx";
+import {
+  getSalaries,
+  createOrUpdateSalary,
+} from "../services/salaryServices.js";
 
 function Salaries() {
   const [salaries, setSalaries] = useState([]);
@@ -22,7 +27,7 @@ function Salaries() {
 
   async function fetchSalaries() {
     try {
-      const { data } = await axios.get("http://localhost:5000/api/salaries");
+      const data = await getSalaries();
 
       setSalaries(data);
     } catch (error) {
@@ -32,7 +37,7 @@ function Salaries() {
 
   async function fetchEmployees() {
     try {
-      const { data } = await axios.get("http://localhost:5000/api/employees");
+      const data = await getEmployees();
 
       setEmployees(data);
     } catch (error) {
@@ -47,31 +52,6 @@ function Salaries() {
     });
   }
 
-  async function handleSubmit(e) {
-    e.preventDefault();
-
-    try {
-      await axios.post(`http://localhost:5000/api/salaries/`, formData);
-
-      fetchSalaries();
-      handleCancelModal();
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  function handleCancelModal() {
-    setShowModal(false);
-    setEditingSalary(null);
-
-    setFormData({
-      employee_id: "",
-      basic_salary: "",
-      allowance: "",
-      deductions: "",
-    });
-  }
-
   function handleEditSalary(salary) {
     setEditingSalary(salary.employee_id);
     setFormData({
@@ -83,79 +63,42 @@ function Salaries() {
     setShowModal(true);
   }
 
+  async function handleSubmit(e) {
+    e.preventDefault();
+
+    try {
+      await createOrUpdateSalary(formData);
+
+      await fetchSalaries();
+      handleCloseModal();
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  function handleCloseModal() {
+    setShowModal(false);
+    setEditingSalary(null);
+
+    setFormData({
+      employee_id: "",
+      basic_salary: "",
+      allowance: "",
+      deductions: "",
+    });
+  }
+
   return (
     <div className="space-y-6">
       {showModal && (
-        <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-xl w-full max-w-lg">
-            {editingSalary ? "Update Salary" : "Manage Salary"}
-
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <select
-                name="employee_id"
-                value={formData.employee_id}
-                onChange={handleChange}
-                className="w-full p-3 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              >
-                <option value="">Select Employee</option>
-
-                {employees.map((employee) => (
-                  <option key={employee.id} value={employee.id}>
-                    {employee.full_name}
-                  </option>
-                ))}
-              </select>
-
-              <input
-                type="number"
-                name="basic_salary"
-                placeholder="Basic Salary"
-                value={formData.basic_salary}
-                onChange={handleChange}
-                className="w-full p-3 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              />
-
-              <input
-                type="number"
-                name="allowance"
-                placeholder="Allowance"
-                value={formData.allowance}
-                onChange={handleChange}
-                className="w-full p-3 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              />
-
-              <input
-                type="number"
-                name="deductions"
-                placeholder="Deductions"
-                value={formData.deductions}
-                onChange={handleChange}
-                className="w-full p-3 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              />
-
-              <div className="flex justify-end gap-3 pt-2">
-                <button
-                  type="button"
-                  onClick={handleCancelModal}
-                  className="px-4 py-2 rounded-full bg-gray-200 hover:bg-gray-300 cursor-pointer"
-                >
-                  Cancel
-                </button>
-
-                <button
-                  type="submit"
-                  className="px-4 py-2 rounded-full bg-blue-500 text-white hover:bg-blue-600 cursor-pointer"
-                >
-                  {editingSalary ? "Update" : "Save"}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
+        <SalaryModal
+          editingSalary={editingSalary}
+          formData={formData}
+          employees={employees}
+          handleChange={handleChange}
+          handleSubmit={handleSubmit}
+          handleCloseModal={handleCloseModal}
+        />
       )}
 
       <div className="flex justify-between items-center">

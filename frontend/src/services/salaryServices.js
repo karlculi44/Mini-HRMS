@@ -1,0 +1,12 @@
+import axios from "axios";
+
+const API_URL = "http://localhost:5000/api/salaries";
+
+export async function getSalaries() {
+  const { data } = await axios.get(API_URL);
+  return data;
+}
+
+export async function createOrUpdateSalary(salaryData) {
+  return axios.post(API_URL, salaryData);
+}
