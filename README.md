@@ -243,6 +243,7 @@ Mini-HRMS
 │   ├── src
 │   ├── public
 │   └── package.json
+│
 ├── mini-hrms.sql
 │
 └── README.md
