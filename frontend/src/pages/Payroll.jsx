@@ -64,7 +64,7 @@ function Payroll() {
           <select
             value={selectedEmployee}
             onChange={(e) => setSelectedEmployee(e.target.value)}
-            className="flex items-center gap-3 border rounded-lg border-gray-400 px-2 py-1 sm:py-2 text-sm sm:text-base w-full sm:w-auto"
+            className="flex items-center gap-3 border rounded-lg border-gray-400 px-2 py-1 sm:py-2 text-sm sm:text-base w-full sm:w-auto cursor-pointer"
           >
             <option value="">Select Employee</option>
 
