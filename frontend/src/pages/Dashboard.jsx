@@ -26,12 +26,11 @@ function Dashboard() {
 
   return (
     <div className="space-y-8">
-      <div className="text-center">
+      <div className="">
         <h1 className="text-4xl font-bold pt-15 lg:pt-0">Welcome Back </h1>
 
         <p className="mt-2 text-gray-500">
-          Monitor employee records, attendance, payroll, and salary information
-          from a single dashboard.
+          Monitor employees from a single dashboard.
         </p>
       </div>
 

@@ -17,13 +17,14 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
 
       {/* Sidebar - hidden on mobile unless opened */}
       <aside
-        className={`fixed left-0 top-0 lg:static w-64 min-h-screen bg-gray-800 p-4 z-40 transition-transform duration-300 ease-in-out ${
+        className={`fixed left-0 top-0 lg:static w-64 min-h-screen bg-gray-800 p-4 z-40 flex flex-col transition-transform duration-300 ease-in-out ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         }`}
       >
-        <h1 className="text-2xl font-bold text-white mb-8 mt-12 lg:mt-0">
-          HRMS
-        </h1>
+        <div className="flex items-center gap-2 mb-8 mt-12 lg:mt-0">
+          <img src="/logo.png" alt="HRMS Logo" className="h-10 w-10" />
+          <h1 className="text-2xl font-bold text-white">HRMS</h1>
+        </div>
 
         <nav className="space-y-2">
           <NavLink
@@ -66,6 +67,13 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
             Payroll
           </NavLink>
         </nav>
+        <NavLink
+          to="/"
+          className="btn-primary block bg-red-500 shadow-none text-center font-bold mt-auto"
+          onClick={() => setSidebarOpen(false)}
+        >
+          Logout
+        </NavLink>
       </aside>
     </div>
   );

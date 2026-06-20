@@ -24,7 +24,6 @@ function Login() {
 
     try {
       await axios.post("http://localhost:5000/api/auth/login", formData);
-      localStorage.setItem("isLoggedIn", "true");
       navigate("/dashboard");
     } catch (error) {
       setError(error.response?.data?.message || "Login failed");
@@ -36,8 +35,8 @@ function Login() {
       <div className="bg-white rounded-xl shadow-lg w-full max-w-md lg:max-w-5xl flex flex-col gap-4 lg:gap-0 lg:flex-row lg:overflow-hidden">
         {/* Left Section - Welcome (shown on top on mobile, left on desktop) */}
         <div className="flex lg:w-1/2 bg-linear-to-br from-blue-500 to-blue-700 text-white p-8 lg:p-12 flex-col justify-center">
-          <h2 className="text-3xl lg:text-4xl font-bold mb-6">
-            Welcome to HRMS
+          <h2 className="text-3xl lg:text-4xl font-bold mb-6 text-center">
+            Welcome to Mini HRMS
           </h2>
           <p className="text-base lg:text-lg mb-4 text-blue-50">
             Manage your human resources efficiently with our comprehensive HR
