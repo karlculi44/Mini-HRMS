@@ -284,6 +284,13 @@ Payroll Management
 
 <img width="1890" height="851" alt="Payroll" src="https://github.com/user-attachments/assets/3992a4db-800c-4886-ab9a-697b656fcaee" />
 
+
+
+Printable Payslip
+
+<img width="1297" height="853" alt="Payslip" src="https://github.com/user-attachments/assets/3dcdc78f-100d-4a48-90f1-21ef69dd93de" />
+
+
 ---
 
 
