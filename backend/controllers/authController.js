@@ -1,16 +1,19 @@
 import db from "../db.js";
 
 export const login = async (req, res) => {
-  console.log("HEADERS:", req.headers);
-  console.log("BODY:", req.body);
-  console.log("CONTENT TYPE:", req.headers["content-type"]);
-  console.log("BODY:", req.body);
   try {
-    const { email, password } = req.body;
+    console.log("HEADERS:", req.headers);
+    console.log("BODY:", req.body);
+
+    const { email, password } = req.body || {};
 
     // basic validation
     if (!email || !password) {
-      return res.status(400).json({ message: "Email and password required" });
+      return res.status(400).json({
+        message: "Email and password required",
+        body: req.body,
+        contentType: req.headers["content-type"],
+      });
     }
 
     // check user

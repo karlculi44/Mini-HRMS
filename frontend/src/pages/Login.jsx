@@ -38,6 +38,9 @@ function Login() {
       navigate("/dashboard");
     } catch (error) {
       console.log("FULL ERROR:", error.response?.data);
+      console.log("STATUS:", error.response?.status);
+      console.log("DATA:", error.response?.data);
+      console.log("ERROR:", error);
       setError(error.response?.data?.message || "Login failed");
     }
   }
