@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/api/employees";
+const API_URL = "https://mini-hrms-jiva.onrender.com/api/employees";
 
 export async function getEmployees() {
   const { data } = await axios.get(API_URL);

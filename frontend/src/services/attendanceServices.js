@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/api/attendance";
+const API_URL = "https://mini-hrms-jiva.onrender.com/api/attendance";
 
 export async function getAttendance() {
   const { data } = await axios.get(API_URL);

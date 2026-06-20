@@ -23,7 +23,10 @@ function Login() {
     e.preventDefault();
 
     try {
-      await axios.post("http://localhost:5000/api/auth/login", formData);
+      await axios.post(
+        "https://mini-hrms-jiva.onrender.com/api/auth/login",
+        formData,
+      );
       navigate("/dashboard");
     } catch (error) {
       setError(error.response?.data?.message || "Login failed");
