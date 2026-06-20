@@ -230,11 +230,6 @@ Password: mockAdmin123
 ```text
 Mini-HRMS
 │
-├── frontend
-│   ├── src
-│   ├── public
-│   └── package.json
-│
 ├── backend
 │   ├── controllers
 │   ├── routes
@@ -244,6 +239,10 @@ Mini-HRMS
 │   ├── server.js
 │   └── package.json
 │
+├── frontend
+│   ├── src
+│   ├── public
+│   └── package.json
 ├── mini-hrms.sql
 │
 └── README.md
