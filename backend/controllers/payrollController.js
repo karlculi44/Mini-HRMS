@@ -59,7 +59,7 @@ export const getPayroll = async (req, res) => {
       FROM payroll p
       JOIN employees e
         ON p.employee_id = e.id
-      ORDER BY p.payroll_date DESC
+     ORDER BY p.id DESC
     `);
 
     return res.json(payroll);
@@ -85,7 +85,7 @@ export const getPayrollByEmployeeId = async (req, res) => {
       JOIN employees e
         ON p.employee_id = e.id
       WHERE p.employee_id = ?
-      ORDER BY p.payroll_date DESC
+      ORDER BY p.id DESC
       `,
       [employeeId],
     );
