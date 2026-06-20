@@ -129,7 +129,7 @@ function Employees() {
   }
 
   return (
-    <div className="space-y-6">
+    <div>
       {/*Modal Component*/}
       {showModal && (
         <EmployeeModal

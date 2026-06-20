@@ -58,7 +58,7 @@ function Payroll() {
   }
 
   return (
-    <div className="space-y-6">
+    <div>
       <div className="flex flex-col sm:flex-row justify-between items-start gap-3 sm:gap-4 print:hidden">
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold pt-15 lg:pt-0">

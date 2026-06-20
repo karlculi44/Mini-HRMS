@@ -6,7 +6,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
     `block px-4 py-2 rounded-lg ${isActive ? "bg-blue-500 text-white" : "text-gray-300 hover:bg-gray-700 transition-all "}`;
 
   return (
-    <div className=" z-50 ">
+    <div className="fixed z-50 ">
       {/* Hamburger Menu Button - visible only on mobile/tablet */}
       <button
         onClick={() => setSidebarOpen(!sidebarOpen)}

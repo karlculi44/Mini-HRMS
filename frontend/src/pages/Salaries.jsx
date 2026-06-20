@@ -91,7 +91,7 @@ function Salaries() {
   }
 
   return (
-    <div className="space-y-6">
+    <div>
       {showModal && (
         <SalaryModal
           editingSalary={editingSalary}
