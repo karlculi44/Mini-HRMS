@@ -13,10 +13,12 @@ const PORT = process.env.PORT || 5000;
 
 app.use(
   cors({
-    origin: "*",
+    origin: ["http://localhost:5173", "https://yourusername.github.io"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   }),
 );
-app.use(express.json());
+
+app.options("*", cors());
 
 // routes
 app.use("/api/auth", authRoutes);
