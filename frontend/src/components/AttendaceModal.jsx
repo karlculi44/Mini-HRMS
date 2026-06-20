@@ -60,14 +60,14 @@ function AttendanceModal({
             <button
               type="button"
               onClick={handleCloseModal}
-              className="px-4 py-2 bg-gray-200 rounded-lg"
+              className="btn-primary px-4 py-2 bg-gray-400 rounded-lg"
             >
               Cancel
             </button>
 
             <button
               type="submit"
-              className="px-4 py-2 bg-blue-500 text-white rounded-lg"
+              className="btn-primary px-4 py-2 bg-blue-500 text-white rounded-lg"
             >
               {editingAttendance ? "Update" : "Save"}
             </button>

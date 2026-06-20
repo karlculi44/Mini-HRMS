@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 
 const Sidebar = () => {
   const linkClass = ({ isActive }) =>
-    `block px-4 py-2 rounded-lg ${isActive ? "bg-blue-500 text-white" : "text-gray-300 hover:bg-gray-700"}`;
+    `block px-4 py-2 rounded-lg ${isActive ? "bg-blue-500 text-white" : "text-gray-300 hover:bg-gray-700 transition-all"}`;
 
   return (
     <aside className="w-64 min-h-screen bg-gray-800 p-4">

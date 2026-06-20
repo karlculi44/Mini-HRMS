@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { Trash2 } from "lucide-react";
+import { Trash2, Pencil } from "lucide-react";
 import { formatDate } from "../helpers/formatDate.js";
+import ConfirmDeleteModal from "../components/ConfirmDeleteModal.jsx";
 import {
   getEmployees,
   createEmployee,
@@ -10,6 +11,8 @@ import {
 import EmployeeModal from "../components/EmployeeModal.jsx";
 
 function Employees() {
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [employeeToDelete, setEmployeeToDelete] = useState(null);
   const [employees, setEmployees] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [editingId, setEditingId] = useState(null);
@@ -34,22 +37,6 @@ function Employees() {
       const data = await getEmployees();
 
       setEmployees(data);
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  async function deleteEmployee(id) {
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this employee? This action can not be undone.",
-    );
-
-    if (!confirmed) return;
-
-    try {
-      await removeEmployee(id);
-
-      await fetchEmployees();
     } catch (error) {
       console.error(error);
     }
@@ -123,6 +110,24 @@ function Employees() {
     });
   }
 
+  function deleteEmployee(employee) {
+    setEmployeeToDelete(employee);
+    setShowDeleteModal(true);
+  }
+
+  async function confirmDelete() {
+    try {
+      await removeEmployee(employeeToDelete);
+
+      await fetchEmployees();
+
+      setShowDeleteModal(false);
+      setEmployeeToDelete(null);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   return (
     <div className="space-y-6">
       {/*Modal Component*/}
@@ -136,12 +141,26 @@ function Employees() {
         />
       )}
 
+      {/*Confirm Delete Modal*/}
+      {showDeleteModal && (
+        <ConfirmDeleteModal
+          setShowDeleteModal={setShowDeleteModal}
+          setEmployeeToDelete={setEmployeeToDelete}
+          confirmDelete={confirmDelete}
+        />
+      )}
+
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Employee Management</h1>
+        <div>
+          <h1 className="text-3xl font-bold">Employee Management</h1>
+          <p className="text-gray-500 mt-1">
+            Manage employee records, job details, and workforce information.
+          </p>
+        </div>
 
         <button
           onClick={() => setShowModal(true)}
-          className="px-5 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 cursor-pointer"
+          className="btn-primary bg-blue-500 text-white rounded-full"
         >
           Add Employee
         </button>
@@ -166,8 +185,13 @@ function Employees() {
           <tbody>
             {employees.length > 0 ? (
               employees.map((employee) => (
-                <tr key={employee.id} className="border-t hover:bg-gray-50">
-                  <td className="p-4">{employee.employee_id}</td>
+                <tr
+                  key={employee.id}
+                  className="border-t border-gray-200 hover:bg-gray-50 transition-all"
+                >
+                  <td className="p-4">
+                    <b>{employee.employee_id}</b>
+                  </td>
                   <td className="p-4">{employee.full_name}</td>
                   <td className="p-4">{employee.email}</td>
                   <td className="p-4">{employee.contact_number}</td>
@@ -180,14 +204,14 @@ function Employees() {
                     <div className="flex gap-2">
                       <button
                         onClick={() => handleEdit(employee)}
-                        className="px-6 py-1 bg-yellow-500 text-white rounded-full hover:bg-yellow-600 cursor-pointer"
+                        className="px-4 py-1 bg-yellow-500 text-white rounded-full hover:bg-yellow-600 cursor-pointer transition-all"
                       >
-                        Edit
+                        <Pencil className="w-4 h-4" />
                       </button>
 
                       <button
                         onClick={() => deleteEmployee(employee.id)}
-                        className="p-2 bg-red-500 text-white rounded-full hover:bg-red-600 cursor-pointer"
+                        className="px-4 py-1 bg-red-500 text-white rounded-full hover:bg-red-600 cursor-pointer transition-all"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>

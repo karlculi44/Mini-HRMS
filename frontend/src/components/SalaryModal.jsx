@@ -62,14 +62,14 @@ function SalaryModal({
             <button
               type="button"
               onClick={handleCloseModal}
-              className="px-4 py-2 rounded-full bg-gray-200 hover:bg-gray-300 cursor-pointer"
+              className="btn-primary px-4 py-2 rounded-full bg-gray-400 hover:bg-gray-300 cursor-pointer"
             >
               Cancel
             </button>
 
             <button
               type="submit"
-              className="px-4 py-2 rounded-full bg-blue-500 text-white hover:bg-blue-600 cursor-pointer"
+              className="btn-primary px-4 py-2 rounded-full bg-blue-500 text-white hover:bg-blue-600 cursor-pointer"
             >
               {editingSalary ? "Update" : "Save"}
             </button>

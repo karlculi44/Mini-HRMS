@@ -1,1 +1,37 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Poppins:wght@400;500;600&display=swap");
 @import "tailwindcss";
+
+body {
+  font-family: "Poppins", sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Montserrat", sans-serif;
+}
+
+@layer components {
+  .btn-primary {
+    padding: 0.5rem 1.25rem;
+    background-color: #3b82f6;
+    color: #ffffff;
+    border-radius: 9999px;
+    cursor: pointer;
+    transition: all 70ms;
+    box-shadow: 0 3px 1px rgb(113, 115, 122);
+  }
+
+  .btn-primary:hover {
+    opacity: 0.9;
+  }
+
+  .btn-primary:active {
+    transform: translateY(0.25rem);
+    box-shadow: none;
+    opacity: 1;
+  }
+}

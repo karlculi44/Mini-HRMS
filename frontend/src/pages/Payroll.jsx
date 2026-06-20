@@ -50,13 +50,19 @@ function Payroll() {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Payroll Management</h1>
+        <div>
+          <h1 className="text-3xl font-bold">Payroll Management</h1>
+          <p className="text-gray-500 mt-1">
+            Generate payroll records, calculate earnings, and manage employee
+            payments.
+          </p>
+        </div>
 
         <div className="flex gap-3">
           <select
             value={selectedEmployee}
             onChange={(e) => setSelectedEmployee(e.target.value)}
-            className="px-4 py-2 rounded-lg border border-gray-300"
+            className="flex items-center gap-3 border rounded-lg border-gray-400 px-2"
           >
             <option value="">Select Employee</option>
 
@@ -69,14 +75,14 @@ function Payroll() {
 
           <button
             onClick={handleGeneratePayroll}
-            className="px-5 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 cursor-pointer"
+            className="btn-primary px-5 py- bg-blue-500 text-white rounded-full hover:bg-blue-600 cursor-pointer flex items-center gap-3"
           >
             Generate Payroll
           </button>
 
           <button
             onClick={handleGenerateAllPayrolls}
-            className="px-5 py-2 bg-green-500 text-white rounded-full hover:bg-green-600 cursor-pointer"
+            className="btn-primary  px-5 py-2 bg-green-500 text-white rounded-full hover:bg-green-600 cursor-pointer "
           >
             Generate All Payrolls
           </button>
@@ -99,7 +105,10 @@ function Payroll() {
           <tbody>
             {payrolls.length > 0 ? (
               payrolls.map((payroll) => (
-                <tr key={payroll.id} className="border-t hover:bg-gray-50">
+                <tr
+                  key={payroll.id}
+                  className="border-t border-gray-200 hover:bg-gray-50 transition-all"
+                >
                   <td className="p-4">{payroll.full_name}</td>
 
                   <td className="p-4">{formatDate(payroll.payroll_date)}</td>

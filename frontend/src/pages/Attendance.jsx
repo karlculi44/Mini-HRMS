@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Pencil } from "lucide-react";
 import { getEmployees } from "../services/employeeServices.js";
 import {
   getAttendance,
@@ -112,11 +113,16 @@ function Attendance() {
       )}
 
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Attendance Management</h1>
+        <div>
+          <h1 className="text-3xl font-bold">Attendance Management</h1>
+          <p className="text-gray-500 mt-1">
+            Track employee attendance, work hours, and daily time records.
+          </p>
+        </div>
 
         <button
           onClick={() => setShowModal(true)}
-          className="px-5 py-2 bg-blue-500 text-white rounded-full"
+          className="btn-primary px-5 py-2 bg-blue-500 text-white rounded-full"
         >
           Record Attendance
         </button>
@@ -138,7 +144,10 @@ function Attendance() {
           <tbody>
             {attendance.length > 0 ? (
               attendance.map((attend) => (
-                <tr key={attend.id} className="border-t hover:bg-gray-50">
+                <tr
+                  key={attend.id}
+                  className="border-t border-gray-200 hover:bg-gray-50"
+                >
                   <td className="p-4">{attend.full_name}</td>
                   <td className="p-4">{formatDate(attend.attendance_date)}</td>
                   <td className="p-4">{attend.time_in}</td>
@@ -147,9 +156,9 @@ function Attendance() {
                   <td className="p-4">
                     <button
                       onClick={() => handleEditAttendance(attend)}
-                      className="px-4 py-1 bg-yellow-500 text-white rounded-full"
+                      className="px-4 py-1 bg-yellow-500 text-white rounded-full hover:bg-yellow-600 cursor-pointer transition-all"
                     >
-                      Edit
+                      <Pencil className="w-4 h-4" />
                     </button>
                   </td>
                 </tr>

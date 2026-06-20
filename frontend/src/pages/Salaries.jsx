@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { formatCurrency } from "../helpers/formatCurrency.js";
 import { getEmployees } from "../services/employeeServices.js";
 import SalaryModal from "../components/SalaryModal.jsx";
+import { Pencil } from "lucide-react";
+
 import {
   getSalaries,
   createOrUpdateSalary,
@@ -102,11 +104,16 @@ function Salaries() {
       )}
 
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Salary Management</h1>
+        <div>
+          <h1 className="text-3xl font-bold">Salary Management</h1>
+          <p className="text-gray-500 mt-1">
+            Manage employee compensation, deductions, and payroll records.
+          </p>
+        </div>
 
         <button
           onClick={() => setShowModal(true)}
-          className="px-5 py-2 bg-blue-500 text-white rounded-full cursor-pointer"
+          className="btn-primary px-5 py-2 bg-blue-500 text-white rounded-full cursor-pointer"
         >
           Add Salary
         </button>
@@ -130,7 +137,10 @@ function Salaries() {
           </thead>
           <tbody>
             {salaries.map((salary) => (
-              <tr key={salary.id} className="border-t">
+              <tr
+                key={salary.id}
+                className="border-t border-gray-200 hover:bg-gray-50 transition-all"
+              >
                 <td className="p-4">{salary.full_name}</td>
                 <td className="p-4">{formatCurrency(salary.basic_salary)}</td>
                 <td className="p-4">{formatCurrency(salary.allowance)}</td>
@@ -142,9 +152,9 @@ function Salaries() {
                 <td className="p-4">
                   <button
                     onClick={() => handleEditSalary(salary)}
-                    className="px-4 py-1 bg-yellow-500 text-white rounded-full hover:bg-yellow-600 cursor-pointer"
+                    className="px-4 py-1 bg-yellow-500 text-white rounded-full hover:bg-yellow-600 cursor-pointer transition-all"
                   >
-                    Edit
+                    <Pencil className="w-4 h-4" />
                   </button>
                 </td>
               </tr>
