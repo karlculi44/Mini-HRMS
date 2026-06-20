@@ -254,21 +254,31 @@ Login Page
 
 <img width="1735" height="814" alt="Login Page" src="https://github.com/user-attachments/assets/4fbc8cb0-9931-48b8-9575-02f545d1aa42" />
 
+
+
 Dashboard
 
 <img width="1896" height="858" alt="Dashboard" src="https://github.com/user-attachments/assets/3fa8eb05-150e-43df-b3a4-2041d0d046a5" />
+
+
 
 Employee Management
 
 <img width="1873" height="852" alt="Employees" src="https://github.com/user-attachments/assets/a49ce8f3-40ff-41dd-aba2-d0d5a0cf464b" />
 
+
+
 Attendance Management
 
 <img width="1893" height="855" alt="Attendance" src="https://github.com/user-attachments/assets/130a0abf-d57a-44b7-869c-c5ba381c2c4c" />
 
+
+
 Salary Management
 
 <img width="1894" height="857" alt="Salaries" src="https://github.com/user-attachments/assets/740f58f4-f982-4355-b129-1a57e89ab6a3" />
+
+
 
 Payroll Management
 
@@ -283,9 +293,6 @@ Payroll Management
 > The project was developed and tested in a local development environment using React, Express, Node.js, and MySQL.
 
 > [!NOTE]
-![Uploading Payroll.png…]()
-
-
 > The provided SQL file contains all required tables and sample data needed to run the system.
 
 > [!NOTE]
