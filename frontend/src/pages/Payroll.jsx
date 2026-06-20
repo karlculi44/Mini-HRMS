@@ -49,20 +49,22 @@ function Payroll() {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row justify-between items-start gap-3 sm:gap-4">
         <div>
-          <h1 className="text-3xl font-bold">Payroll Management</h1>
-          <p className="text-gray-500 mt-1">
+          <h1 className="text-2xl sm:text-3xl font-bold pt-10">
+            Payroll Management
+          </h1>
+          <p className="text-sm sm:text-base text-gray-500 mt-1">
             Generate payroll records, calculate earnings, and manage employee
             payments.
           </p>
         </div>
 
-        <div className="flex gap-3">
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full sm:w-auto">
           <select
             value={selectedEmployee}
             onChange={(e) => setSelectedEmployee(e.target.value)}
-            className="flex items-center gap-3 border rounded-lg border-gray-400 px-2"
+            className="flex items-center gap-3 border rounded-lg border-gray-400 px-2 py-1 sm:py-2 text-sm sm:text-base w-full sm:w-auto"
           >
             <option value="">Select Employee</option>
 
@@ -75,30 +77,42 @@ function Payroll() {
 
           <button
             onClick={handleGeneratePayroll}
-            className="btn-primary px-5 py- bg-blue-500 text-white rounded-full hover:bg-blue-600 cursor-pointer flex items-center gap-3"
+            className="btn-primary px-3 sm:px-5 py-1 sm:py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 cursor-pointer flex items-center justify-center gap-3 text-xs sm:text-sm w-full sm:w-auto"
           >
             Generate Payroll
           </button>
 
           <button
             onClick={handleGenerateAllPayrolls}
-            className="btn-primary  px-5 py-2 bg-green-500 text-white rounded-full hover:bg-green-600 cursor-pointer "
+            className="btn-primary px-3 sm:px-5 py-1 sm:py-2 bg-green-500 text-white rounded-full hover:bg-green-600 cursor-pointer text-xs sm:text-sm w-full sm:w-auto"
           >
-            Generate All Payrolls
+            Generate All
           </button>
         </div>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-        <table className="w-full">
+      <div className="bg-white rounded-xl shadow-sm overflow-x-auto">
+        <table className="w-full text-sm sm:text-base">
           <thead className="bg-gray-100">
             <tr>
-              <th className="p-4 text-left">Employee</th>
-              <th className="p-4 text-left">Payroll Date</th>
-              <th className="p-4 text-left">Basic Salary</th>
-              <th className="p-4 text-left">Allowance</th>
-              <th className="p-4 text-left">Deductions</th>
-              <th className="p-4 text-left">Net Salary</th>
+              <th className="p-2 sm:p-4 text-left text-xs sm:text-sm">
+                Employee
+              </th>
+              <th className="p-2 sm:p-4 text-left text-xs sm:text-sm">
+                Payroll Date
+              </th>
+              <th className="p-2 sm:p-4 text-left text-xs sm:text-sm hidden md:table-cell">
+                Basic Salary
+              </th>
+              <th className="p-2 sm:p-4 text-left text-xs sm:text-sm hidden lg:table-cell">
+                Allowance
+              </th>
+              <th className="p-2 sm:p-4 text-left text-xs sm:text-sm hidden lg:table-cell">
+                Deductions
+              </th>
+              <th className="p-2 sm:p-4 text-left text-xs sm:text-sm">
+                Net Salary
+              </th>
             </tr>
           </thead>
 
@@ -109,26 +123,32 @@ function Payroll() {
                   key={payroll.id}
                   className="border-t border-gray-200 hover:bg-gray-50 transition-all"
                 >
-                  <td className="p-4">{payroll.full_name}</td>
-
-                  <td className="p-4">{formatDate(payroll.payroll_date)}</td>
-
-                  <td className="p-4">
+                  <td className="p-2 sm:p-4 text-xs sm:text-sm">
+                    {payroll.full_name}
+                  </td>
+                  <td className="p-2 sm:p-4 text-xs sm:text-sm">
+                    {formatDate(payroll.payroll_date)}
+                  </td>
+                  <td className="p-2 sm:p-4 text-xs sm:text-sm hidden md:table-cell">
                     {formatCurrency(payroll.basic_salary)}
                   </td>
-
-                  <td className="p-4">{formatCurrency(payroll.allowance)}</td>
-
-                  <td className="p-4">{formatCurrency(payroll.deductions)}</td>
-
-                  <td className="p-4 font-semibold">
+                  <td className="p-2 sm:p-4 text-xs sm:text-sm hidden lg:table-cell">
+                    {formatCurrency(payroll.allowance)}
+                  </td>
+                  <td className="p-2 sm:p-4 text-xs sm:text-sm hidden lg:table-cell">
+                    {formatCurrency(payroll.deductions)}
+                  </td>
+                  <td className="p-2 sm:p-4 text-xs sm:text-sm font-semibold">
                     {formatCurrency(payroll.net_salary)}
                   </td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan="6" className="p-6 text-center text-gray-500">
+                <td
+                  colSpan="6"
+                  className="p-4 sm:p-6 text-center text-gray-500 text-sm sm:text-base"
+                >
                   No payroll records found.
                 </td>
               </tr>
