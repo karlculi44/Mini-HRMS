@@ -24,6 +24,9 @@ app.use("/api/dashboard", dashboardRoutes);
 app.get("/", (req, res) => {
   res.json({ message: "HRMS API running" });
 });
+app.get("/test", (req, res) => {
+  res.json({ ok: true });
+});
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
