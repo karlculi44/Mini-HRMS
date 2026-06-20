@@ -21,14 +21,23 @@ function Login() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-
+    console.log("FORM DATA:", formData);
     try {
       await axios.post(
         "https://mini-hrms-jjva.onrender.com/api/auth/login",
-        formData,
+        {
+          email: formData.email,
+          password: formData.password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
       );
       navigate("/dashboard");
     } catch (error) {
+      console.log("FULL ERROR:", error.response?.data);
       setError(error.response?.data?.message || "Login failed");
     }
   }
