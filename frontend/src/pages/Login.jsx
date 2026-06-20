@@ -24,7 +24,7 @@ function Login() {
 
     try {
       await axios.post(
-        "https://mini-hrms-jiva.onrender.com/api/auth/login",
+        "https://mini-hrms-jjva.onrender.com/api/auth/login",
         formData,
       );
       navigate("/dashboard");

@@ -1,6 +1,7 @@
 import db from "../db.js";
 
 export const login = async (req, res) => {
+  console.log("BODY:", req.body);
   try {
     const { email, password } = req.body;
 
