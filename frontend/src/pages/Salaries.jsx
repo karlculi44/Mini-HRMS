@@ -105,7 +105,7 @@ function Salaries() {
 
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold pt-10">
+          <h1 className="text-2xl sm:text-3xl font-bold pt-15 lg:pt-0">
             Salary Management
           </h1>
           <p className="text-sm sm:text-base text-gray-500 mt-1">
@@ -172,7 +172,7 @@ function Salaries() {
                     onClick={() => handleEditSalary(salary)}
                     className="px-2 sm:px-4 py-1 bg-yellow-500 text-white rounded-full hover:bg-yellow-600 cursor-pointer transition-all text-xs sm:text-sm"
                   >
-                    <Pencil className="w-3 h-3 sm:w-4 sm:h-4" />
+                    <Pencil className="w-3 sm:w-4" />
                   </button>
                 </td>
               </tr>

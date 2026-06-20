@@ -3,11 +3,13 @@ import { getPayrolls, generatePayroll } from "../services/payrollServices.js";
 import { getEmployees } from "../services/employeeServices.js";
 import { formatDate } from "../helpers/formatDate.js";
 import { formatCurrency } from "./../helpers/formatCurrency.js";
+import { Printer } from "lucide-react";
 
 function Payroll() {
   const [payrolls, setPayrolls] = useState([]);
   const [employees, setEmployees] = useState([]);
   const [selectedEmployee, setSelectedEmployee] = useState("");
+  const [printPayroll, setPrintPayroll] = useState(null);
 
   useEffect(() => {
     fetchPayrolls();
@@ -47,11 +49,19 @@ function Payroll() {
     }
   }
 
+  function handlePrint(payroll) {
+    setPrintPayroll(payroll);
+    setTimeout(() => {
+      window.print();
+      setPrintPayroll(null);
+    }, 100);
+  }
+
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row justify-between items-start gap-3 sm:gap-4">
+      <div className="flex flex-col sm:flex-row justify-between items-start gap-3 sm:gap-4 print:hidden">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold pt-10">
+          <h1 className="text-2xl sm:text-3xl font-bold pt-15 lg:pt-0">
             Payroll Management
           </h1>
           <p className="text-sm sm:text-base text-gray-500 mt-1">
@@ -64,7 +74,7 @@ function Payroll() {
           <select
             value={selectedEmployee}
             onChange={(e) => setSelectedEmployee(e.target.value)}
-            className="flex items-center gap-3 border rounded-lg border-gray-400 px-2 py-1 sm:py-2 text-sm sm:text-base w-full sm:w-auto cursor-pointer"
+            className="flex items-center gap-3 border rounded-lg border-gray-400 px-2 py-1 sm:py-2 text-sm sm:text-base w-full sm:w-auto"
           >
             <option value="">Select Employee</option>
 
@@ -91,7 +101,7 @@ function Payroll() {
         </div>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm overflow-x-auto">
+      <div className="bg-white rounded-xl shadow-sm overflow-x-auto print:hidden">
         <table className="w-full text-sm sm:text-base">
           <thead className="bg-gray-100">
             <tr>
@@ -112,6 +122,9 @@ function Payroll() {
               </th>
               <th className="p-2 sm:p-4 text-left text-xs sm:text-sm">
                 Net Salary
+              </th>
+              <th className="p-2 sm:p-4 text-left text-xs sm:text-sm">
+                Actions
               </th>
             </tr>
           </thead>
@@ -141,12 +154,21 @@ function Payroll() {
                   <td className="p-2 sm:p-4 text-xs sm:text-sm font-semibold">
                     {formatCurrency(payroll.net_salary)}
                   </td>
+                  <td className="p-2 sm:p-4">
+                    <button
+                      onClick={() => handlePrint(payroll)}
+                      className="px-2 sm:px-4 py-1 bg-blue-500 text-white rounded-full hover:bg-blue-600 cursor-pointer transition-all text-xs sm:text-sm"
+                      title="Print Payroll"
+                    >
+                      <Printer className="w-3 sm:w-4" />
+                    </button>
+                  </td>
                 </tr>
               ))
             ) : (
               <tr>
                 <td
-                  colSpan="6"
+                  colSpan="7"
                   className="p-4 sm:p-6 text-center text-gray-500 text-sm sm:text-base"
                 >
                   No payroll records found.
@@ -156,6 +178,84 @@ function Payroll() {
           </tbody>
         </table>
       </div>
+
+      {/* Print Template */}
+      {printPayroll && (
+        <div className="hidden print:block">
+          <style>{`
+            @page {
+              margin: 0;
+              padding: 0;
+            }
+            body {
+              margin: 0;
+              padding: 0;
+            }
+          `}</style>
+          <div className="bg-white p-8">
+            <div className="text-center mb-8">
+              <h1 className="text-3xl font-bold">HRMS Payroll Slip</h1>
+              <p className="text-gray-600 mt-2">Confidential</p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-8 mb-8">
+              <div>
+                <h3 className="font-bold mb-2">Employee Information</h3>
+                <p>
+                  <strong>Name:</strong> {printPayroll.full_name}
+                </p>
+                <p>
+                  <strong>Employee ID:</strong> {printPayroll.employee_id}
+                </p>
+              </div>
+              <div>
+                <h3 className="font-bold mb-2">Payroll Information</h3>
+                <p>
+                  <strong>Payroll Date:</strong>{" "}
+                  {formatDate(printPayroll.payroll_date)}
+                </p>
+              </div>
+            </div>
+
+            <table className="w-full mb-8 border-collapse">
+              <tbody>
+                <tr className="border-b-2 border-gray-800">
+                  <td className="py-2 font-bold">Basic Salary</td>
+                  <td className="py-2 text-right font-bold">
+                    {formatCurrency(printPayroll.basic_salary)}
+                  </td>
+                </tr>
+                <tr className="border-b border-gray-300">
+                  <td className="py-2">Allowance</td>
+                  <td className="py-2 text-right">
+                    {formatCurrency(printPayroll.allowance)}
+                  </td>
+                </tr>
+                <tr className="border-b border-gray-300">
+                  <td className="py-2">Deductions</td>
+                  <td className="py-2 text-right">
+                    {formatCurrency(printPayroll.deductions)}
+                  </td>
+                </tr>
+                <tr className="border-b-2 border-gray-800">
+                  <td className="py-4 font-bold text-lg">Net Salary</td>
+                  <td className="py-4 text-right font-bold text-lg">
+                    {formatCurrency(printPayroll.net_salary)}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div className="text-center text-sm text-gray-600 mt-12">
+              <p>
+                This is an electronically generated document. No signature
+                required.
+              </p>
+              <p className="mt-2">Printed on: {new Date().toLocaleString()}</p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
