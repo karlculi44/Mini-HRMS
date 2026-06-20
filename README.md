@@ -233,8 +233,6 @@ Mini-HRMS
 ├── backend
 │   ├── controllers
 │   ├── routes
-│   ├── helpers
-│   ├── services
 │   ├── db.js
 │   ├── server.js
 │   └── package.json
