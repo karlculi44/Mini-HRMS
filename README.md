@@ -128,9 +128,7 @@ CREATE DATABASE mini_hrms;
 
 Import the provided SQL file:
 
-```text
-mini-hrms.sql
-```
+ `mini-hrms.sql`
 
 The SQL file contains:
 
