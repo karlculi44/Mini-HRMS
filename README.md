@@ -246,44 +246,45 @@ Mini-HRMS
 ```
 ---
 
-Screenshots
-Login Page
+## Screenshots
+
+### Login Page
 
 <img width="1735" height="814" alt="Login Page" src="https://github.com/user-attachments/assets/4fbc8cb0-9931-48b8-9575-02f545d1aa42" />
 
 
 
-Dashboard
+###  Dashboard
 
 <img width="1896" height="858" alt="Dashboard" src="https://github.com/user-attachments/assets/3fa8eb05-150e-43df-b3a4-2041d0d046a5" />
 
 
 
-Employee Management
+###  Employee Management
 
 <img width="1873" height="852" alt="Employees" src="https://github.com/user-attachments/assets/a49ce8f3-40ff-41dd-aba2-d0d5a0cf464b" />
 
 
 
-Attendance Management
+### Attendance Management
 
 <img width="1893" height="855" alt="Attendance" src="https://github.com/user-attachments/assets/130a0abf-d57a-44b7-869c-c5ba381c2c4c" />
 
 
 
-Salary Management
+### Salary Management
 
 <img width="1894" height="857" alt="Salaries" src="https://github.com/user-attachments/assets/740f58f4-f982-4355-b129-1a57e89ab6a3" />
 
 
 
-Payroll Management
+### Payroll Management
 
 <img width="1890" height="851" alt="Payroll" src="https://github.com/user-attachments/assets/3992a4db-800c-4886-ab9a-697b656fcaee" />
 
 
 
-Printable Payslip
+### Printable Payslip
 
 <img width="1297" height="853" alt="Payslip" src="https://github.com/user-attachments/assets/3dcdc78f-100d-4a48-90f1-21ef69dd93de" />
 
