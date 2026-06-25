@@ -69,10 +69,19 @@ function Login() {
           </h1>
 
           {error && (
-            <p className="text-red-500 text-sm mb-4 text-center">{error}</p>
+            <p
+              className="text-red-500 text-sm mb-4 text-center"
+              aria-label="error message"
+            >
+              {error}
+            </p>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form
+            onSubmit={handleSubmit}
+            className="space-y-4"
+            aria-label="login form"
+          >
             <input
               type="email"
               name="email"
