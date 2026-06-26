@@ -85,6 +85,7 @@ function Login() {
             <input
               type="email"
               name="email"
+              aria-label="email textbox"
               placeholder="Email"
               value={formData.email}
               onChange={handleChange}
@@ -102,6 +103,7 @@ function Login() {
 
             <button
               type="submit"
+              aria-label="login button"
               className="btn-primary w-full bg-blue-500 text-white py-3 rounded-full hover:bg-blue-600 text-sm sm:text-base font-medium transition-all"
             >
               Login

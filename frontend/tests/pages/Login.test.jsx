@@ -2,20 +2,24 @@ import { describe, it, expect, vi } from "vitest";
 import Login from "../../src/pages/Login";
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
+import { userEvent } from "@testing-library/user-event";
 
 describe("Login Page", () => {
-  it("renders the login form in the page", () => {
-    const onSubmit = vi.fn();
+  it("enables typing on the email and password textboxes", async () => {
+    const user = userEvent.setup();
+
     render(
       <MemoryRouter>
-        <Login onSubmit={onSubmit} />
+        <Login />
       </MemoryRouter>,
     );
 
-    expect(
-      screen.getByRole("form", {
-        name: /login form/i,
-      }),
-    ).toBeInTheDocument();
+    await user.type(screen.getByPlaceholderText(/email/i), "kaikai");
+
+    expect(screen.getByPlaceholderText(/email/i)).toHaveValue("kaikai");
+
+    await user.type(screen.getByPlaceholderText(/password/i), "kaikai");
+
+    expect(screen.getByPlaceholderText(/password/i)).toHaveValue("kaikai");
   });
 });
