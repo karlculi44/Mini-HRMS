@@ -24,12 +24,32 @@ export const getDashboardStats = async (req, res) => {
       FROM salaries
     `);
 
-    res.json({
-      totalEmployees: totalEmployees.totalEmployees,
-      activeEmployees: activeEmployees.activeEmployees,
-      employeesOnLeave: employeesOnLeave.employeesOnLeave,
-      totalMonthlyPayroll: totalMonthlyPayroll.totalMonthlyPayroll,
-    });
+    res.json([
+      {
+        name: "Total Employees",
+        value: totalEmployees.totalEmployees,
+        type: "number",
+        color: "text-blue-600",
+      },
+      {
+        name: "Active Employees",
+        value: activeEmployees.activeEmployees,
+        type: "number",
+        color: "text-green-600",
+      },
+      {
+        name: "Employees On Leave",
+        value: employeesOnLeave.employeesOnLeave,
+        type: "number",
+        color: "text-amber-500",
+      },
+      {
+        name: "Total Monthly Payroll",
+        value: totalMonthlyPayroll.totalMonthlyPayroll,
+        type: "currency",
+        color: "text-black",
+      },
+    ]);
   } catch (error) {
     res.status(500).json({
       message: "Failed to fetch dashboard statistics",

@@ -1,14 +1,8 @@
 import { useState, useEffect } from "react";
-import { formatCurrency } from "../helpers/formatCurrency";
 import { getDashboardStats } from "../services/dashboardServices";
-
+import { StatItem } from "../components/StatItem";
 function Dashboard() {
-  const [stats, setStats] = useState({
-    totalEmployees: 0,
-    activeEmployees: 0,
-    employeesOnLeave: 0,
-    totalMonthlyPayroll: 0,
-  });
+  const [stats, setStats] = useState([]);
 
   useEffect(() => {
     async function fetchDashboardStats() {
@@ -35,31 +29,15 @@ function Dashboard() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-        {/* Total Employees */}
-        <div className="bg-white p-6 rounded-xl shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-slate-50 text-blue-600">
-          <p className="text-gray-500">Total Employees</p>
-          <h2 className="text-3xl font-bold mt-2">{stats.totalEmployees}</h2>
-        </div>
-
-        {/* Active Employees */}
-        <div className="bg-white p-6 rounded-xl shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-slate-50 text-green-600">
-          <p className="text-gray-500">Active Employees</p>
-          <h2 className="text-3xl font-bold mt-2">{stats.activeEmployees}</h2>
-        </div>
-
-        {/* Employees on Leave */}
-        <div className="bg-white p-6 rounded-xl shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-slate-50 text-amber-500">
-          <p className="text-gray-500">Employees on Leave</p>
-          <h2 className="text-3xl font-bold mt-2">{stats.employeesOnLeave}</h2>
-        </div>
-
-        {/* Total Monthly Payroll */}
-        <div className="bg-white p-6 rounded-xl shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-slate-50 ">
-          <p className="text-gray-500">Total Monthly Payroll</p>
-          <h2 className="text-3xl font-bold mt-2">
-            {formatCurrency(stats.totalMonthlyPayroll)}
-          </h2>
-        </div>
+        {stats.map((stat) => (
+          <StatItem
+            key={stat.name}
+            name={stat.name}
+            value={stat.value}
+            type={stat.type}
+            color={stat.color}
+          />
+        ))}
       </div>
     </div>
   );
