@@ -25,6 +25,7 @@ function ConfirmDeleteModal({
           </button>
 
           <button
+            aria-label="confirm delete"
             onClick={confirmDelete}
             className="btn-primary px-4 py-2 bg-red-500 text-white hover:bg-red-600 rounded-lg cursor-pointer text-sm sm:text-base transition-all"
           >

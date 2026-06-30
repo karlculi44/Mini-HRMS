@@ -240,6 +240,7 @@ function Employees() {
                     <td className="p-2 sm:p-4">
                       <div className="flex gap-1 sm:gap-2 whitespace-nowrap">
                         <button
+                          aria-label="edit"
                           onClick={() => handleEdit(employee)}
                           className="px-2 sm:px-4 py-1 bg-yellow-500 text-white rounded-full hover:bg-yellow-600 cursor-pointer transition-all text-xs sm:text-sm"
                         >
@@ -247,6 +248,7 @@ function Employees() {
                         </button>
 
                         <button
+                          aria-label="delete"
                           onClick={() => deleteEmployee(employee.id)}
                           className="px-2 sm:px-4 py-1 bg-red-500 text-white rounded-full hover:bg-red-600 cursor-pointer transition-all text-xs sm:text-sm"
                         >
