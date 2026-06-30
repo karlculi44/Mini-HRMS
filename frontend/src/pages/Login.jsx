@@ -1,6 +1,6 @@
 import { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { loginUser } from "../services/loginServices";
 
 function Login() {
   const navigate = useNavigate();
@@ -23,7 +23,8 @@ function Login() {
     e.preventDefault();
 
     try {
-      await axios.post("http://localhost:5000/api/auth/login", formData);
+      await loginUser(formData);
+
       navigate("/dashboard");
     } catch (error) {
       setError(error.response?.data?.message || "Login failed");
@@ -103,7 +104,6 @@ function Login() {
 
             <button
               type="submit"
-              aria-label="login button"
               className="btn-primary w-full bg-blue-500 text-white py-3 rounded-full hover:bg-blue-600 text-sm sm:text-base font-medium transition-all"
             >
               Login
