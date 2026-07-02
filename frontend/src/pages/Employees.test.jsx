@@ -13,6 +13,18 @@ import {
 vi.mock("../services/employeeServices");
 
 describe("Employees", () => {
+  it("renders the employee management heading", async () => {
+    vi.mocked(employeeServices.getEmployees).mockResolvedValue(mockEmployees);
+
+    render(<Employees />);
+
+    expect(
+      await screen.findByRole("heading", {
+        name: /employee management/i,
+      }),
+    ).toBeInTheDocument();
+  });
+
   it("renders the employees properly", async () => {
     vi.mocked(employeeServices.getEmployees).mockResolvedValue(mockEmployees);
 
