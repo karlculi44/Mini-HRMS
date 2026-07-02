@@ -42,8 +42,10 @@ function Salaries() {
       const data = await getEmployees();
 
       setEmployees(data);
+      return data;
     } catch (error) {
       console.error(error);
+      return [];
     }
   }
 
@@ -169,6 +171,7 @@ function Salaries() {
 
                 <td className="p-2 sm:p-4">
                   <button
+                    aria-label={`Edit salary for ${salary.full_name}`}
                     onClick={() => handleEditSalary(salary)}
                     className="px-2 sm:px-4 py-1 bg-yellow-500 text-white rounded-full hover:bg-yellow-600 cursor-pointer transition-all text-xs sm:text-sm"
                   >
