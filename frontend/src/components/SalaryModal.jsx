@@ -14,21 +14,32 @@ function SalaryModal({
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <select
-            name="employee_id"
-            value={formData.employee_id}
-            onChange={handleChange}
-            className="w-full p-3 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
-            required
-          >
-            <option value="">Select Employee</option>
+          {editingSalary ? (
+            <div className="w-full p-3 rounded-lg border border-gray-200 bg-gray-50 text-sm sm:text-base">
+              <span className="font-semibold text-gray-800">
+                {employees.find(
+                  (employee) =>
+                    String(employee.id) === String(formData.employee_id),
+                )?.full_name || "Selected Employee"}
+              </span>
+            </div>
+          ) : (
+            <select
+              name="employee_id"
+              value={formData.employee_id}
+              onChange={handleChange}
+              className="w-full p-3 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
+              required
+            >
+              <option value="">Select Employee</option>
 
-            {employees.map((employee) => (
-              <option key={employee.id} value={employee.id}>
-                {employee.full_name}
-              </option>
-            ))}
-          </select>
+              {employees.map((employee) => (
+                <option key={employee.id} value={employee.id}>
+                  {employee.full_name}
+                </option>
+              ))}
+            </select>
+          )}
 
           <input
             type="number"

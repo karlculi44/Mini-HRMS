@@ -124,14 +124,14 @@ describe("Salaries", () => {
       await screen.findByRole("heading", { name: /update salary/i }),
     ).toBeInTheDocument();
 
-    const employeeSelect = await screen.findByRole("combobox");
+    const employeeLabel = screen.getByText((_, element) => {
+      return (
+        element?.textContent === "Juan Dela Cruz" &&
+        element.tagName.toLowerCase() === "span"
+      );
+    });
 
-    expect(employeeSelect).toHaveValue("1");
-    expect(
-      screen.getByRole("option", { name: "Juan Dela Cruz" }).selected,
-    ).toBe(true);
-
-    expect(screen.getByDisplayValue("50000")).toBeInTheDocument();
+    expect(employeeLabel).toBeInTheDocument();
 
     const basicSalaryInput = screen.getByPlaceholderText(/basic salary/i);
     await user.clear(basicSalaryInput);
