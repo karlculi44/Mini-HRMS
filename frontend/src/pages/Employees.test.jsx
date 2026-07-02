@@ -6,6 +6,7 @@ import * as employeeServices from "../services/employeeServices";
 import {
   mockEmployees,
   mockEmployeesWithoutJuan,
+  mockNewEmployee,
   mockNoEmployees,
 } from "../test/mocks/employeesData";
 
@@ -105,6 +106,72 @@ describe("Employees", () => {
     ).toBeInTheDocument();
 
     expect(screen.getByDisplayValue("EMP001")).toBeInTheDocument();
+  });
+
+  it("creates a new employee when the form is submitted", async () => {
+    const user = userEvent.setup();
+    vi.mocked(employeeServices.getEmployees)
+      .mockResolvedValueOnce([])
+      .mockResolvedValueOnce([mockNewEmployee]);
+    vi.mocked(employeeServices.createEmployee).mockResolvedValue();
+
+    render(<Employees />);
+
+    await user.click(screen.getByRole("button", { name: /add employee/i }));
+
+    await user.type(screen.getByPlaceholderText(/employee id/i), "EMP006");
+    await user.type(screen.getByPlaceholderText(/full name/i), "New Employee");
+    await user.type(screen.getByPlaceholderText(/email/i), "new@example.com");
+    await user.type(
+      screen.getByPlaceholderText(/contact number/i),
+      "09111111111",
+    );
+    await user.type(screen.getByPlaceholderText(/position/i), "Analyst");
+    await user.type(screen.getByPlaceholderText(/department/i), "IT");
+
+    await user.click(screen.getByRole("button", { name: /save/i }));
+
+    await waitFor(() => {
+      expect(employeeServices.createEmployee).toHaveBeenCalledWith(
+        expect.objectContaining({
+          employee_id: "EMP006",
+          full_name: "New Employee",
+          email: "new@example.com",
+        }),
+      );
+    });
+
+    expect(
+      screen.queryByRole("heading", { name: /add employee/i }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("updates an employee when the form is submitted", async () => {
+    const user = userEvent.setup();
+    vi.mocked(employeeServices.getEmployees).mockResolvedValue(mockEmployees);
+    vi.mocked(employeeServices.updateEmployee).mockResolvedValue();
+
+    render(<Employees />);
+
+    const juanCell = await screen.findByText("Juan Dela Cruz");
+    const juanRow = juanCell.closest("tr");
+
+    expect(juanRow).not.toBeNull();
+
+    await user.click(within(juanRow).getByRole("button", { name: /edit/i }));
+
+    const fullNameInput = screen.getByDisplayValue("Juan Dela Cruz");
+
+    await user.clear(fullNameInput);
+    await user.type(fullNameInput, "Juan Santos");
+    await user.click(screen.getByRole("button", { name: /update/i }));
+
+    await waitFor(() => {
+      expect(employeeServices.updateEmployee).toHaveBeenCalledWith(
+        1,
+        expect.objectContaining({ full_name: "Juan Santos" }),
+      );
+    });
   });
 
   it("removes the user from the table after successful user confirms deletion", async () => {

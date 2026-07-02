@@ -104,3 +104,15 @@ export const mockEmployeesWithoutJuan = [
 ];
 
 export const mockNoEmployees = [];
+
+export const mockNewEmployee = {
+  id: 1,
+  employee_id: "EMP006",
+  full_name: "New Employee",
+  email: "new@example.com",
+  contact_number: "09111111111",
+  department: "IT",
+  position: "Analyst",
+  date_hired: "2026-07-02",
+  employment_status: "Active",
+};
