@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1782957993610" clover="3.2.0">
-  <project timestamp="1782957993610" name="All files">
-    <metrics statements="87" coveredstatements="72" conditionals="23" coveredconditionals="21" methods="32" coveredmethods="25" elements="142" coveredelements="118" complexity="0" loc="87" ncloc="87" packages="5" files="13" classes="13"/>
+<coverage generated="1783053008533" clover="3.2.0">
+  <project timestamp="1783053008533" name="All files">
+    <metrics statements="210" coveredstatements="170" conditionals="47" coveredconditionals="43" methods="79" coveredmethods="61" elements="336" coveredelements="274" complexity="0" loc="210" ncloc="210" packages="5" files="24" classes="24"/>
     <package name="components">
-      <metrics statements="7" coveredstatements="5" conditionals="11" coveredconditionals="10" methods="4" coveredmethods="3"/>
+      <metrics statements="12" coveredstatements="10" conditionals="23" coveredconditionals="21" methods="9" coveredmethods="8"/>
+      <file name="AttendaceModal.jsx" path="C:\Users\Karl\OneDrive\Desktop\Mini HRMS System\frontend\src\components\AttendaceModal.jsx">
+        <metrics statements="2" coveredstatements="2" conditionals="4" coveredconditionals="4" methods="2" coveredmethods="2"/>
+        <line num="9" count="8" type="stmt"/>
+        <line num="30" count="40" type="stmt"/>
+      </file>
       <file name="ConfirmDeleteModal.jsx" path="C:\Users\Karl\OneDrive\Desktop\Mini HRMS System\frontend\src\components\ConfirmDeleteModal.jsx">
         <metrics statements="3" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="1"/>
         <line num="6" count="1" type="stmt"/>
@@ -13,6 +18,12 @@
       <file name="EmployeeModal.jsx" path="C:\Users\Karl\OneDrive\Desktop\Mini HRMS System\frontend\src\components\EmployeeModal.jsx">
         <metrics statements="1" coveredstatements="1" conditionals="4" coveredconditionals="4" methods="1" coveredmethods="1"/>
         <line num="8" count="70" type="stmt"/>
+      </file>
+      <file name="SalaryModal.jsx" path="C:\Users\Karl\OneDrive\Desktop\Mini HRMS System\frontend\src\components\SalaryModal.jsx">
+        <metrics statements="3" coveredstatements="3" conditionals="8" coveredconditionals="7" methods="3" coveredmethods="3"/>
+        <line num="9" count="23" type="stmt"/>
+        <line num="22" count="6" type="stmt"/>
+        <line num="37" count="80" type="stmt"/>
       </file>
       <file name="StatItem.jsx" path="C:\Users\Karl\OneDrive\Desktop\Mini HRMS System\frontend\src\components\StatItem.jsx">
         <metrics statements="3" coveredstatements="3" conditionals="7" coveredconditionals="6" methods="1" coveredmethods="1"/>
@@ -25,16 +36,54 @@
       <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
       <file name="formatCurrency.js" path="C:\Users\Karl\OneDrive\Desktop\Mini HRMS System\frontend\src\helpers\formatCurrency.js">
         <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="2" count="2" type="stmt"/>
+        <line num="2" count="266" type="stmt"/>
       </file>
       <file name="formatDate.js" path="C:\Users\Karl\OneDrive\Desktop\Mini HRMS System\frontend\src\helpers\formatDate.js">
         <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="2" count="110" type="stmt"/>
-        <line num="4" count="110" type="stmt"/>
+        <line num="2" count="173" type="stmt"/>
+        <line num="4" count="173" type="stmt"/>
       </file>
     </package>
     <package name="pages">
-      <metrics statements="60" coveredstatements="56" conditionals="12" coveredconditionals="11" methods="20" coveredmethods="20"/>
+      <metrics statements="160" coveredstatements="142" conditionals="24" coveredconditionals="22" methods="54" coveredmethods="51"/>
+      <file name="Attendance.jsx" path="C:\Users\Karl\OneDrive\Desktop\Mini HRMS System\frontend\src\pages\Attendance.jsx">
+        <metrics statements="35" coveredstatements="32" conditionals="6" coveredconditionals="6" methods="11" coveredmethods="11"/>
+        <line num="13" count="18" type="stmt"/>
+        <line num="14" count="18" type="stmt"/>
+        <line num="15" count="18" type="stmt"/>
+        <line num="16" count="18" type="stmt"/>
+        <line num="18" count="18" type="stmt"/>
+        <line num="26" count="18" type="stmt"/>
+        <line num="27" count="4" type="stmt"/>
+        <line num="28" count="4" type="stmt"/>
+        <line num="32" count="6" type="stmt"/>
+        <line num="33" count="6" type="stmt"/>
+        <line num="34" count="6" type="stmt"/>
+        <line num="36" count="0" type="stmt"/>
+        <line num="41" count="4" type="stmt"/>
+        <line num="42" count="4" type="stmt"/>
+        <line num="44" count="4" type="stmt"/>
+        <line num="46" count="0" type="stmt"/>
+        <line num="51" count="6" type="stmt"/>
+        <line num="58" count="1" type="stmt"/>
+        <line num="60" count="1" type="stmt"/>
+        <line num="68" count="1" type="stmt"/>
+        <line num="72" count="2" type="stmt"/>
+        <line num="73" count="2" type="stmt"/>
+        <line num="74" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="75" count="1" type="stmt"/>
+        <line num="77" count="1" type="stmt"/>
+        <line num="80" count="2" type="stmt"/>
+        <line num="81" count="2" type="stmt"/>
+        <line num="83" count="0" type="stmt"/>
+        <line num="88" count="2" type="stmt"/>
+        <line num="89" count="2" type="stmt"/>
+        <line num="91" count="2" type="stmt"/>
+        <line num="100" count="18" type="stmt"/>
+        <line num="124" count="1" type="stmt"/>
+        <line num="157" count="42" type="stmt"/>
+        <line num="178" count="1" type="stmt"/>
+      </file>
       <file name="Dashboard.jsx" path="C:\Users\Karl\OneDrive\Desktop\Mini HRMS System\frontend\src\pages\Dashboard.jsx">
         <metrics statements="9" coveredstatements="8" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="4"/>
         <line num="5" count="4" type="stmt"/>
@@ -104,9 +153,89 @@
         <line num="30" count="1" type="cond" truecount="1" falsecount="1"/>
         <line num="34" count="54" type="stmt"/>
       </file>
+      <file name="Payroll.jsx" path="C:\Users\Karl\OneDrive\Desktop\Mini HRMS System\frontend\src\pages\Payroll.jsx">
+        <metrics statements="30" coveredstatements="23" conditionals="4" coveredconditionals="3" methods="12" coveredmethods="9"/>
+        <line num="9" count="11" type="stmt"/>
+        <line num="10" count="11" type="stmt"/>
+        <line num="11" count="11" type="stmt"/>
+        <line num="12" count="11" type="stmt"/>
+        <line num="14" count="11" type="stmt"/>
+        <line num="15" count="4" type="stmt"/>
+        <line num="16" count="4" type="stmt"/>
+        <line num="20" count="6" type="stmt"/>
+        <line num="21" count="6" type="stmt"/>
+        <line num="25" count="4" type="stmt"/>
+        <line num="26" count="4" type="stmt"/>
+        <line num="30" count="1" type="stmt"/>
+        <line num="31" count="1" type="stmt"/>
+        <line num="33" count="1" type="stmt"/>
+        <line num="35" count="1" type="stmt"/>
+        <line num="37" count="0" type="stmt"/>
+        <line num="41" count="1" type="stmt"/>
+        <line num="42" count="1" type="stmt"/>
+        <line num="43" count="5" type="stmt"/>
+        <line num="46" count="1" type="stmt"/>
+        <line num="48" count="0" type="stmt"/>
+        <line num="53" count="0" type="stmt"/>
+        <line num="54" count="0" type="stmt"/>
+        <line num="55" count="0" type="stmt"/>
+        <line num="56" count="0" type="stmt"/>
+        <line num="60" count="11" type="stmt"/>
+        <line num="76" count="1" type="stmt"/>
+        <line num="103" count="35" type="stmt"/>
+        <line num="156" count="21" type="stmt"/>
+        <line num="180" count="0" type="stmt"/>
+      </file>
+      <file name="Salaries.jsx" path="C:\Users\Karl\OneDrive\Desktop\Mini HRMS System\frontend\src\pages\Salaries.jsx">
+        <metrics statements="35" coveredstatements="31" conditionals="2" coveredconditionals="2" methods="11" coveredmethods="11"/>
+        <line num="13" count="37" type="stmt"/>
+        <line num="14" count="37" type="stmt"/>
+        <line num="15" count="37" type="stmt"/>
+        <line num="16" count="37" type="stmt"/>
+        <line num="18" count="37" type="stmt"/>
+        <line num="25" count="37" type="stmt"/>
+        <line num="26" count="6" type="stmt"/>
+        <line num="27" count="6" type="stmt"/>
+        <line num="31" count="8" type="stmt"/>
+        <line num="32" count="8" type="stmt"/>
+        <line num="34" count="8" type="stmt"/>
+        <line num="36" count="0" type="stmt"/>
+        <line num="41" count="6" type="stmt"/>
+        <line num="42" count="6" type="stmt"/>
+        <line num="44" count="6" type="stmt"/>
+        <line num="45" count="6" type="stmt"/>
+        <line num="47" count="0" type="stmt"/>
+        <line num="48" count="0" type="stmt"/>
+        <line num="53" count="19" type="stmt"/>
+        <line num="60" count="1" type="stmt"/>
+        <line num="61" count="1" type="stmt"/>
+        <line num="67" count="1" type="stmt"/>
+        <line num="71" count="2" type="stmt"/>
+        <line num="73" count="2" type="stmt"/>
+        <line num="74" count="2" type="stmt"/>
+        <line num="76" count="2" type="stmt"/>
+        <line num="77" count="2" type="stmt"/>
+        <line num="79" count="0" type="stmt"/>
+        <line num="84" count="2" type="stmt"/>
+        <line num="85" count="2" type="stmt"/>
+        <line num="87" count="2" type="stmt"/>
+        <line num="95" count="37" type="stmt"/>
+        <line num="119" count="3" type="stmt"/>
+        <line num="152" count="45" type="stmt"/>
+        <line num="175" count="1" type="stmt"/>
+      </file>
     </package>
     <package name="services">
-      <metrics statements="12" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="6" coveredmethods="0"/>
+      <metrics statements="26" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="14" coveredmethods="0"/>
+      <file name="attendanceServices.js" path="C:\Users\Karl\OneDrive\Desktop\Mini HRMS System\frontend\src\services\attendanceServices.js">
+        <metrics statements="6" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="0"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="6" count="0" type="stmt"/>
+        <line num="7" count="0" type="stmt"/>
+        <line num="11" count="0" type="stmt"/>
+        <line num="15" count="0" type="stmt"/>
+        <line num="19" count="0" type="stmt"/>
+      </file>
       <file name="dashboardServices.js" path="C:\Users\Karl\OneDrive\Desktop\Mini HRMS System\frontend\src\services\dashboardServices.js">
         <metrics statements="3" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
         <line num="3" count="1" type="stmt"/>
@@ -115,7 +244,7 @@
       </file>
       <file name="employeeServices.js" path="C:\Users\Karl\OneDrive\Desktop\Mini HRMS System\frontend\src\services\employeeServices.js">
         <metrics statements="6" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="0"/>
-        <line num="3" count="1" type="stmt"/>
+        <line num="3" count="4" type="stmt"/>
         <line num="6" count="0" type="stmt"/>
         <line num="7" count="0" type="stmt"/>
         <line num="11" count="0" type="stmt"/>
@@ -128,19 +257,46 @@
         <line num="6" count="0" type="stmt"/>
         <line num="7" count="0" type="stmt"/>
       </file>
+      <file name="payrollServices.js" path="C:\Users\Karl\OneDrive\Desktop\Mini HRMS System\frontend\src\services\payrollServices.js">
+        <metrics statements="4" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="0"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="6" count="0" type="stmt"/>
+        <line num="7" count="0" type="stmt"/>
+        <line num="11" count="0" type="stmt"/>
+      </file>
+      <file name="salaryServices.js" path="C:\Users\Karl\OneDrive\Desktop\Mini HRMS System\frontend\src\services\salaryServices.js">
+        <metrics statements="4" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="0"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="6" count="0" type="stmt"/>
+        <line num="7" count="0" type="stmt"/>
+        <line num="11" count="0" type="stmt"/>
+      </file>
     </package>
     <package name="test.mocks">
-      <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <metrics statements="9" coveredstatements="9" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <file name="attendanceData.js" path="C:\Users\Karl\OneDrive\Desktop\Mini HRMS System\frontend\src\test\mocks\attendanceData.js">
+        <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="31" count="1" type="stmt"/>
+      </file>
       <file name="dashboardData.js" path="C:\Users\Karl\OneDrive\Desktop\Mini HRMS System\frontend\src\test\mocks\dashboardData.js">
         <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
       </file>
       <file name="employeesData.js" path="C:\Users\Karl\OneDrive\Desktop\Mini HRMS System\frontend\src\test\mocks\employeesData.js">
         <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="4" type="stmt"/>
+        <line num="59" count="4" type="stmt"/>
+        <line num="106" count="4" type="stmt"/>
+        <line num="108" count="4" type="stmt"/>
+      </file>
+      <file name="payrollData.js" path="C:\Users\Karl\OneDrive\Desktop\Mini HRMS System\frontend\src\test\mocks\payrollData.js">
+        <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
-        <line num="59" count="1" type="stmt"/>
-        <line num="106" count="1" type="stmt"/>
-        <line num="108" count="1" type="stmt"/>
+      </file>
+      <file name="salariesData.js" path="C:\Users\Karl\OneDrive\Desktop\Mini HRMS System\frontend\src\test\mocks\salariesData.js">
+        <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="1" type="stmt"/>
       </file>
     </package>
   </project>
