@@ -19,6 +19,7 @@ function AttendanceModal({
         >
           <select
             name="employee_id"
+            aria-label="Select Employee"
             value={formData.employee_id}
             onChange={handleChange}
             className="p-3 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
@@ -35,6 +36,7 @@ function AttendanceModal({
           <input
             type="date"
             name="attendance_date"
+            aria-label="Attendance Date"
             value={formData.attendance_date}
             onChange={handleChange}
             className="p-3 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
@@ -43,6 +45,7 @@ function AttendanceModal({
           <input
             type="time"
             name="time_in"
+            aria-label="Time In"
             value={formData.time_in}
             onChange={handleChange}
             className="p-3 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
@@ -51,6 +54,7 @@ function AttendanceModal({
           <input
             type="time"
             name="time_out"
+            aria-label="Time Out"
             value={formData.time_out}
             onChange={handleChange}
             className="p-3 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
@@ -58,6 +62,7 @@ function AttendanceModal({
 
           <select
             name="status"
+            aria-label="Status"
             value={formData.status}
             onChange={handleChange}
             className="p-3 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
@@ -81,7 +86,7 @@ function AttendanceModal({
               type="submit"
               className="btn-primary px-4 py-2 bg-blue-500 text-white hover:bg-blue-600 rounded-lg text-sm sm:text-base transition-all"
             >
-              {editingAttendance ? "Update" : "Save"}
+              {editingAttendance ? "Update" : "Record"}
             </button>
           </div>
         </form>
