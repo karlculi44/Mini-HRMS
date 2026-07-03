@@ -113,10 +113,23 @@ export const recordAttendance = async (req, res) => {
 //UPDATE ATTENDANCE
 export const updateAttendance = async (req, res) => {
   try {
-    const { employeeId } = req.params;
-    const { attendance_date, time_in, time_out, status } = req.body;
+    const { attendanceId } = req.params;
+    const { employee_id, attendance_date, time_in, time_out, status } =
+      req.body;
+
+    const [attendance] = await db.query(
+      "SELECT id FROM attendance WHERE id = ?",
+      [attendanceId],
+    );
+
+    if (attendance.length === 0) {
+      return res.status(404).json({
+        message: "Attendance record not found",
+      });
+    }
+
     const [employee] = await db.query("SELECT id FROM employees WHERE id = ?", [
-      employeeId,
+      employee_id,
     ]);
 
     if (employee.length === 0) {
@@ -129,13 +142,14 @@ export const updateAttendance = async (req, res) => {
       `
       UPDATE attendance
       SET
+        employee_id = ?,
         attendance_date = ?,
         time_in = ?,
         time_out = ?,
         status = ?
-      WHERE employee_id = ?
+      WHERE id = ?
       `,
-      [attendance_date, time_in, time_out, status, employeeId],
+      [employee_id, attendance_date, time_in, time_out, status, attendanceId],
     );
 
     return res.json({

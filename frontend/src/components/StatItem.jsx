@@ -7,7 +7,7 @@ export function StatItem({ name, value, type, color }) {
     ? type === "currency"
       ? formatCurrency(value)
       : value
-    : "---";
+    : "Failed to fetch data";
 
   return (
     <div className="bg-white p-6 rounded-xl shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-slate-50">

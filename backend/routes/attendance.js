@@ -11,7 +11,7 @@ const router = express.Router();
 
 router.get("/", getAllAttendance);
 router.get("/:employeeId", getAttendanceByEmployeeId);
-router.put("/:employeeId", updateAttendance);
+router.put("/:attendanceId", updateAttendance);
 router.post("/", recordAttendance);
 
 export default router;

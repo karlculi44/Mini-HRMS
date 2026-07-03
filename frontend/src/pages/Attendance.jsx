@@ -55,7 +55,7 @@ function Attendance() {
   }
 
   function handleEditAttendance(attend) {
-    setEditingAttendance(attend.employee_id);
+    setEditingAttendance(attend.id);
 
     setFormData({
       employee_id: attend.employee_id,
@@ -71,11 +71,9 @@ function Attendance() {
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      console.log(formData);
       if (editingAttendance) {
         await updateAttendance(editingAttendance, formData);
       } else {
-        console.log(formData);
         await createAttendance(formData);
       }
 
@@ -178,6 +176,7 @@ function Attendance() {
                   <td className="p-2 sm:p-4">
                     <button
                       onClick={() => handleEditAttendance(attend)}
+                      aria-label="Edit attendance"
                       className="px-2 sm:px-4 py-1 bg-yellow-500 text-white rounded-full hover:bg-yellow-600 cursor-pointer transition-all text-xs sm:text-sm"
                     >
                       <Pencil className="w-3 sm:w-4" />
