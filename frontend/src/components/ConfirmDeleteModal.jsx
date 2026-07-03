@@ -2,6 +2,7 @@ function ConfirmDeleteModal({
   setShowDeleteModal,
   setEmployeeToDelete,
   confirmDelete,
+  employeeToDelete,
 }) {
   return (
     <div className="fixed inset-0 bg-black/50 flex justify-center items-center px-4 z-50">
@@ -9,8 +10,8 @@ function ConfirmDeleteModal({
         <h2 className="text-lg sm:text-xl font-bold mb-2">Delete Employee</h2>
 
         <p className="text-gray-600 mb-6 text-sm sm:text-base">
-          Are you sure you want to delete this employee? This action cannot be
-          undone.
+          Are you sure you want to delete {<b>{employeeToDelete}</b>}? This
+          action <b>CANNOT</b> be undone.
         </p>
 
         <div className="flex flex-col-reverse sm:flex-row justify-end gap-3">

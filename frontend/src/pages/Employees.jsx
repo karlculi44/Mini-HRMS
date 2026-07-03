@@ -117,7 +117,7 @@ function Employees() {
 
   async function confirmDelete() {
     try {
-      await removeEmployee(employeeToDelete);
+      await removeEmployee(employeeToDelete.id);
 
       await fetchEmployees();
 
@@ -147,6 +147,7 @@ function Employees() {
           setShowDeleteModal={setShowDeleteModal}
           setEmployeeToDelete={setEmployeeToDelete}
           confirmDelete={confirmDelete}
+          employeeToDelete={employeeToDelete?.full_name}
         />
       )}
 
@@ -249,7 +250,7 @@ function Employees() {
 
                         <button
                           aria-label="delete"
-                          onClick={() => deleteEmployee(employee.id)}
+                          onClick={() => deleteEmployee(employee)}
                           className="px-2 sm:px-4 py-1 bg-red-500 text-white rounded-full hover:bg-red-600 cursor-pointer transition-all text-xs sm:text-sm"
                         >
                           <Trash2 className="w-3 sm:w-4 " />
