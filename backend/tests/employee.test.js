@@ -1,11 +1,17 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, afterEach, vi } from "vitest";
 import request from "supertest";
 import app from "../app";
+import db from "../db";
 import {
+  employeeMessages,
   newEmployee,
   updatedEmployee,
   nonExistentEmployeeId,
 } from "./fixtures/mockEmployees";
+
+afterEach(() => {
+  vi.restoreAllMocks();
+});
 
 const buildNewEmployeePayload = () => {
   const uniqueToken = Date.now();
@@ -50,6 +56,35 @@ describe("GET /employees", () => {
       expect(response.body).toEqual([]);
     }
   });
+
+  it("returns employee fields when data exists", async () => {
+    const response = await request(app).get("/api/employees");
+
+    expect(response.status).toBe(200);
+    if (response.body.length > 0) {
+      expect(response.body[0]).toEqual(
+        expect.objectContaining({
+          employee_id: expect.any(String),
+          email: expect.any(String),
+          position: expect.any(String),
+        }),
+      );
+    }
+  });
+
+  it("returns 500 when fetching employees fails", async () => {
+    vi.spyOn(db, "query").mockRejectedValueOnce(new Error("DB down"));
+
+    const response = await request(app).get("/api/employees");
+
+    expect(response.status).toBe(500);
+    expect(response.body).toEqual(
+      expect.objectContaining({
+        message: employeeMessages.failedFetchAll,
+        error: "DB down",
+      }),
+    );
+  });
 });
 
 describe("GET /employees/:id", () => {
@@ -68,8 +103,42 @@ describe("GET /employees/:id", () => {
     const response = await request(app).get("/api/employees/9999");
     expect(response.status).toBe(404);
     expect(response.body).toEqual({
-      message: "Employee not found",
+      message: employeeMessages.notFound,
     });
+  });
+
+  it("returns complete employee details for a created employee", async () => {
+    const createResponse = await request(app)
+      .post("/api/employees")
+      .send(buildNewEmployeePayload());
+
+    expect(createResponse.status).toBe(201);
+
+    const employeeId = createResponse.body.id;
+    const response = await request(app).get(`/api/employees/${employeeId}`);
+
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual(
+      expect.objectContaining({
+        id: employeeId,
+        full_name: expect.any(String),
+        email: expect.any(String),
+      }),
+    );
+  });
+
+  it("returns 500 when fetching employee by ID fails", async () => {
+    vi.spyOn(db, "query").mockRejectedValueOnce(new Error("DB down"));
+
+    const response = await request(app).get("/api/employees/1");
+
+    expect(response.status).toBe(500);
+    expect(response.body).toEqual(
+      expect.objectContaining({
+        message: employeeMessages.failedFetchOne,
+        error: "DB down",
+      }),
+    );
   });
 });
 
@@ -82,7 +151,7 @@ describe("POST /employees", () => {
     expect(response.status).toBe(201);
     expect(response.body).toEqual(
       expect.objectContaining({
-        message: "Employee added successfully",
+        message: employeeMessages.created,
         id: expect.any(Number),
       }),
     );
@@ -100,8 +169,40 @@ describe("POST /employees", () => {
 
     expect(response.status).toBe(400);
     expect(response.body).toEqual({
-      message: "Invalid input: all employee fields are required",
+      message: employeeMessages.invalidRequired,
     });
+  });
+
+  it("rejects invalid email format", async () => {
+    const invalidPayload = {
+      ...buildNewEmployeePayload(),
+      email: "invalid-email-format",
+    };
+
+    const response = await request(app)
+      .post("/api/employees")
+      .send(invalidPayload);
+
+    expect(response.status).toBe(400);
+    expect(response.body).toEqual({
+      message: employeeMessages.invalidEmail,
+    });
+  });
+
+  it("returns 500 when creating employee fails", async () => {
+    vi.spyOn(db, "query").mockRejectedValueOnce(new Error("DB down"));
+
+    const response = await request(app)
+      .post("/api/employees")
+      .send(buildNewEmployeePayload());
+
+    expect(response.status).toBe(500);
+    expect(response.body).toEqual(
+      expect.objectContaining({
+        message: employeeMessages.failedCreate,
+        error: "DB down",
+      }),
+    );
   });
 });
 
@@ -123,8 +224,34 @@ describe("PUT /employees/:id", () => {
 
     expect(updateResponse.status).toBe(200);
     expect(updateResponse.body).toEqual({
-      message: "Employee updated successfully",
+      message: employeeMessages.updated,
     });
+  });
+
+  it("returns updated data when fetched after update", async () => {
+    const createResponse = await request(app)
+      .post("/api/employees")
+      .send(buildNewEmployeePayload());
+
+    expect(createResponse.status).toBe(201);
+
+    const employeeId = createResponse.body.id;
+    const updatePayload = buildUpdatedEmployeePayload();
+
+    const updateResponse = await request(app)
+      .put(`/api/employees/${employeeId}`)
+      .send(updatePayload);
+
+    expect(updateResponse.status).toBe(200);
+
+    const getResponse = await request(app).get(`/api/employees/${employeeId}`);
+    expect(getResponse.status).toBe(200);
+    expect(getResponse.body).toEqual(
+      expect.objectContaining({
+        full_name: updatePayload.full_name,
+        email: updatePayload.email,
+      }),
+    );
   });
 
   it("returns 404 if employee does not exist", async () => {
@@ -136,8 +263,24 @@ describe("PUT /employees/:id", () => {
 
     expect(response.status).toBe(404);
     expect(response.body).toEqual({
-      message: "Employee not found",
+      message: employeeMessages.notFound,
     });
+  });
+
+  it("returns 500 when updating employee fails", async () => {
+    vi.spyOn(db, "query").mockRejectedValueOnce(new Error("DB down"));
+
+    const response = await request(app)
+      .put("/api/employees/1")
+      .send(buildUpdatedEmployeePayload());
+
+    expect(response.status).toBe(500);
+    expect(response.body).toEqual(
+      expect.objectContaining({
+        message: employeeMessages.failedUpdate,
+        error: "DB down",
+      }),
+    );
   });
 });
 
@@ -157,13 +300,13 @@ describe("DELETE /employees/:id", () => {
 
     expect(deleteResponse.status).toBe(200);
     expect(deleteResponse.body).toEqual({
-      message: "Employee deleted successfully",
+      message: employeeMessages.deleted,
     });
 
     const getResponse = await request(app).get(`/api/employees/${employeeId}`);
     expect(getResponse.status).toBe(404);
     expect(getResponse.body).toEqual({
-      message: "Employee not found",
+      message: employeeMessages.notFound,
     });
   });
 
@@ -174,7 +317,21 @@ describe("DELETE /employees/:id", () => {
 
     expect(response.status).toBe(404);
     expect(response.body).toEqual({
-      message: "Employee not found",
+      message: employeeMessages.notFound,
     });
+  });
+
+  it("returns 500 when deleting employee fails", async () => {
+    vi.spyOn(db, "query").mockRejectedValueOnce(new Error("DB down"));
+
+    const response = await request(app).delete("/api/employees/1");
+
+    expect(response.status).toBe(500);
+    expect(response.body).toEqual(
+      expect.objectContaining({
+        message: employeeMessages.failedDelete,
+        error: "DB down",
+      }),
+    );
   });
 });

@@ -21,3 +21,17 @@ export const updatedEmployee = {
 };
 
 export const nonExistentEmployeeId = 999999;
+
+export const employeeMessages = {
+  notFound: "Employee not found",
+  created: "Employee added successfully",
+  updated: "Employee updated successfully",
+  deleted: "Employee deleted successfully",
+  invalidRequired: "Invalid input: all employee fields are required",
+  invalidEmail: "Invalid input: email format is invalid",
+  failedFetchAll: "Failed to fetch employees",
+  failedFetchOne: "Failed to fetch employee",
+  failedCreate: "Failed to add employee",
+  failedUpdate: "Failed to update employee",
+  failedDelete: "Failed to delete employee",
+};
