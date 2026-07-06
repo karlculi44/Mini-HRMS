@@ -31,6 +31,36 @@ export const addEmployee = async (req, res) => {
       employment_status,
     } = req.body;
 
+    const requiredFields = {
+      employee_id,
+      full_name,
+      email,
+      contact_number,
+      position,
+      department,
+      date_hired,
+      employment_status,
+    };
+
+    const hasMissingRequiredField = Object.values(requiredFields).some(
+      (value) =>
+        value === undefined || value === null || `${value}`.trim() === "",
+    );
+
+    if (hasMissingRequiredField) {
+      return res.status(400).json({
+        message: "Invalid input: all employee fields are required",
+      });
+    }
+
+    const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+    if (!isValidEmail) {
+      return res.status(400).json({
+        message: "Invalid input: email format is invalid",
+      });
+    }
+
     const [result] = await db.query(
       `
       INSERT INTO employees
