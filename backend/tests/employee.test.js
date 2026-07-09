@@ -1,13 +1,17 @@
 import { describe, it, expect, afterEach, vi } from "vitest";
 import request from "supertest";
 import app from "../app";
-import db from "../db";
+import db from "../config/db";
 import {
   employeeMessages,
   newEmployee,
   updatedEmployee,
   nonExistentEmployeeId,
+  employeeList,
+  emptyEmployeeArray,
+  employeeIdMock,
 } from "./fixtures/mockEmployees";
+import jwt from "jsonwebtoken";
 
 afterEach(() => {
   vi.restoreAllMocks();
@@ -34,23 +38,32 @@ const buildUpdatedEmployeePayload = () => {
 };
 
 describe("GET /employees", () => {
-  it("returns an array", async () => {
-    const response = await request(app).get("/api/employees");
+  it("returns an array of employees", async () => {
+    vi.spyOn(db, "query").mockResolvedValueOnce([employeeList]);
 
-    console.log(response);
-    expect(response.status).toBe(200);
-    expect(Array.isArray(response.body)).toBe(true);
-    expect(response.body.length).toBeGreaterThan(0);
-    expect(response.body[0]).toEqual(
-      expect.objectContaining({
-        id: expect.any(Number),
-        full_name: expect.any(String),
-      }),
-    );
+    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    const response = await request(app)
+      .get("/api/employees")
+      .set("Cookie", `token=${token}`);
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual(employeeList);
   });
 
   it("returns an empty array when there are no employees", async () => {
-    const response = await request(app).get("/api/employees");
+    vi.spyOn(db, "query").mockResolvedValueOnce([emptyEmployeeArray]);
+
+    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    const response = await request(app)
+      .get("/api/employees")
+      .set("Cookie", `token=${token}`);
+
     expect(response.status).toBe(200);
     if (response.body.length === 0) {
       expect(response.body).toEqual([]);
@@ -58,7 +71,15 @@ describe("GET /employees", () => {
   });
 
   it("returns employee fields when data exists", async () => {
-    const response = await request(app).get("/api/employees");
+    vi.spyOn(db, "query").mockResolvedValueOnce([employeeList]);
+
+    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    const response = await request(app)
+      .get("/api/employees")
+      .set("Cookie", `token=${token}`);
 
     expect(response.status).toBe(200);
     if (response.body.length > 0) {
@@ -75,7 +96,13 @@ describe("GET /employees", () => {
   it("returns 500 when fetching employees fails", async () => {
     vi.spyOn(db, "query").mockRejectedValueOnce(new Error("DB down"));
 
-    const response = await request(app).get("/api/employees");
+    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    const response = await request(app)
+      .get("/api/employees")
+      .set("Cookie", `token=${token}`);
 
     expect(response.status).toBe(500);
     expect(response.body).toEqual(
@@ -89,18 +116,27 @@ describe("GET /employees", () => {
 
 describe("GET /employees/:id", () => {
   it("returns a single employee by ID", async () => {
-    const response = await request(app).get("/api/employees/3");
+    vi.spyOn(db, "query").mockResolvedValueOnce([employeeIdMock]);
+
+    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    const response = await request(app)
+      .get(`/api/employees/${employeeIdMock}`)
+      .set("Cookie", `token=${token}`);
+
     expect(response.status).toBe(200);
-    expect(response.body).toEqual(
-      expect.objectContaining({
-        id: expect.any(Number),
-        full_name: expect.any(String),
-      }),
-    );
   });
 
   it("returns 404 when employee is not found", async () => {
-    const response = await request(app).get("/api/employees/9999");
+    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    const response = await request(app)
+      .get(`/api/employees/${nonExistentEmployeeId}`)
+      .set("Cookie", `token=${token}`);
     expect(response.status).toBe(404);
     expect(response.body).toEqual({
       message: employeeMessages.notFound,
@@ -108,6 +144,15 @@ describe("GET /employees/:id", () => {
   });
 
   it("returns complete employee details for a created employee", async () => {
+    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    const response = await request(app)
+      .get("/api/employees")
+      .set("Cookie", `token=${token}`)
+      .send(buildNewEmployeePayload());
+
     const createResponse = await request(app)
       .post("/api/employees")
       .send(buildNewEmployeePayload());

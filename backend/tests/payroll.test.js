@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import request from "supertest";
 import app from "../app";
-import db from "../db";
+import db from "../config/db";
 import {
   employeePayrollHistory,
   payrollErrors,

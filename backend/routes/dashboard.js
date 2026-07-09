@@ -1,9 +1,9 @@
 import express from "express";
-import db from "../db.js";
 import { getDashboardStats } from "../controllers/dashboardController.js";
+import { verifyToken } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
-router.get("/", getDashboardStats);
+router.get("/", verifyToken, getDashboardStats);
 
 export default router;

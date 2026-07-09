@@ -1,4 +1,4 @@
-import db from "../db.js";
+import db from "../config/db.js";
 
 //GENERATE PAYROLL
 export const generatePayroll = async (req, res) => {

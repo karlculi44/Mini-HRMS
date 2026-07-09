@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import request from "supertest";
 import app from "../app";
-import db from "../db";
+import db from "../config/db";
 import {
   dashboardErrors,
   dashboardMessages,
@@ -21,7 +21,13 @@ describe("GET /api/dashboard", () => {
       querySpy.mockResolvedValueOnce(result);
     });
 
-    const response = await request(app).get("/api/dashboard");
+    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    const response = await request(app)
+      .get("/api/dashboard")
+      .set("Cookie", `token=${token}`);
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual(expectedDashboardStats);
