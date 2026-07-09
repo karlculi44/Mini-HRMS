@@ -12,19 +12,12 @@ export const register = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // basic validation
-    if (!email || !password) {
-      return res.status(400).json({ message: "Email and password required" });
-    }
-
-    // check if user already exists
     const users = await findUserByEmail(email);
 
     if (users.length > 0) {
       return res.status(409).json({ message: "User already exists" });
     }
 
-    // hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
     const result = await createUser(email, hashedPassword);
 
@@ -43,12 +36,6 @@ export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // basic validation
-    if (!email || !password) {
-      return res.status(400).json({ message: "Email and password required" });
-    }
-
-    // check if user exists
     const users = await findUserForLogin(email);
 
     if (users.length === 0) {
