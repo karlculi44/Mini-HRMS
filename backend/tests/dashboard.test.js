@@ -8,6 +8,8 @@ import {
   dashboardQueryMocks,
   expectedDashboardStats,
 } from "./fixtures/mockDashboard";
+import { employeeList } from "./fixtures/mockEmployees";
+import jwt from "jsonwebtoken";
 
 afterEach(() => {
   vi.restoreAllMocks();
@@ -40,7 +42,13 @@ describe("GET /api/dashboard", () => {
       querySpy.mockResolvedValueOnce(result);
     });
 
-    const response = await request(app).get("/api/dashboard");
+    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    const response = await request(app)
+      .get("/api/dashboard")
+      .set("Cookie", `token=${token}`);
 
     expect(response.status).toBe(200);
     expect(response.body[0]).toEqual(
@@ -58,8 +66,13 @@ describe("GET /api/dashboard", () => {
     dashboardQueryMocks.zeroData.forEach((result) => {
       querySpy.mockResolvedValueOnce(result);
     });
+    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
 
-    const response = await request(app).get("/api/dashboard");
+    const response = await request(app)
+      .get("/api/dashboard")
+      .set("Cookie", `token=${token}`);
 
     expect(response.status).toBe(200);
     expect(response.body[1]).toEqual(
@@ -78,7 +91,13 @@ describe("GET /api/dashboard", () => {
       querySpy.mockResolvedValueOnce(result);
     });
 
-    const response = await request(app).get("/api/dashboard");
+    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    const response = await request(app)
+      .get("/api/dashboard")
+      .set("Cookie", `token=${token}`);
 
     expect(response.status).toBe(200);
     expect(response.body[2]).toEqual(
@@ -97,7 +116,13 @@ describe("GET /api/dashboard", () => {
       querySpy.mockResolvedValueOnce(result);
     });
 
-    const response = await request(app).get("/api/dashboard");
+    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    const response = await request(app)
+      .get("/api/dashboard")
+      .set("Cookie", `token=${token}`);
 
     expect(response.status).toBe(200);
     expect(response.body[3]).toEqual(
@@ -114,7 +139,13 @@ describe("GET /api/dashboard", () => {
       new Error(dashboardErrors.dbDown),
     );
 
-    const response = await request(app).get("/api/dashboard");
+    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    const response = await request(app)
+      .get("/api/dashboard")
+      .set("Cookie", `token=${token}`);
 
     expect(response.status).toBe(500);
     expect(response.body).toEqual(

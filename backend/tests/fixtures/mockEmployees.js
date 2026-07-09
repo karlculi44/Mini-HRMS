@@ -1,3 +1,5 @@
+import { id } from "zod/v4/locales";
+
 export const newEmployee = {
   employee_id: "EMP",
   full_name: "Employee Test",
@@ -36,7 +38,17 @@ export const employeeMessages = {
   failedDelete: "Failed to delete employee",
 };
 
-export const employeeIdMock = 1;
+export const mockEmployee = {
+  id: 1,
+  employee_id: "TEST EMP",
+  full_name: "Test Employee",
+  email: "test.employee@test.com",
+  contact_number: "09123456789",
+  position: "Software Engineer",
+  department: "Engineering",
+  date_hired: "2026-07-03",
+  employment_status: "Active",
+};
 
 export const employeeList = [
   {
