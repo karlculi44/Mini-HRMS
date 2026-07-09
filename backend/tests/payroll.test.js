@@ -10,6 +10,8 @@ import {
   payrollMessages,
   salaryRecord,
 } from "./fixtures/mockPayroll";
+import { employeeList } from "./fixtures/mockEmployees";
+import jwt from "jsonwebtoken";
 
 afterEach(() => {
   vi.restoreAllMocks();
@@ -22,9 +24,13 @@ describe("POST /api/payroll/:employeeId", () => {
     querySpy.mockResolvedValueOnce([[salaryRecord]]);
     querySpy.mockResolvedValueOnce([{ insertId: 1 }]);
 
-    const response = await request(app).post(
-      `/api/payroll/${payrollIds.employeeId}`,
-    );
+    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    const response = await request(app)
+      .post(`/api/payroll/${payrollIds.employeeId}`)
+      .set("Cookie", `token=${token}`);
 
     expect(response.status).toBe(201);
     expect(response.body).toEqual({
@@ -35,9 +41,13 @@ describe("POST /api/payroll/:employeeId", () => {
   it("returns 404 when the salary record is not found", async () => {
     vi.spyOn(db, "query").mockResolvedValueOnce([[]]);
 
-    const response = await request(app).post(
-      `/api/payroll/${payrollIds.missingEmployeeId}`,
-    );
+    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    const response = await request(app)
+      .post(`/api/payroll/${payrollIds.missingEmployeeId}`)
+      .set("Cookie", `token=${token}`);
 
     expect(response.status).toBe(404);
     expect(response.body).toEqual({
@@ -50,9 +60,13 @@ describe("POST /api/payroll/:employeeId", () => {
       new Error(payrollErrors.dbDown),
     );
 
-    const response = await request(app).post(
-      `/api/payroll/${payrollIds.employeeId}`,
-    );
+    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    const response = await request(app)
+      .post(`/api/payroll/${payrollIds.employeeId}`)
+      .set("Cookie", `token=${token}`);
 
     expect(response.status).toBe(500);
     expect(response.body).toEqual({
@@ -66,7 +80,13 @@ describe("GET /api/payroll", () => {
   it("returns all payroll records", async () => {
     vi.spyOn(db, "query").mockResolvedValueOnce([payrollList]);
 
-    const response = await request(app).get("/api/payroll");
+    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    const response = await request(app)
+      .get("/api/payroll")
+      .set("Cookie", `token=${token}`);
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual(payrollList);
@@ -75,7 +95,13 @@ describe("GET /api/payroll", () => {
   it("returns an empty array when there are no payroll records", async () => {
     vi.spyOn(db, "query").mockResolvedValueOnce([[]]);
 
-    const response = await request(app).get("/api/payroll");
+    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    const response = await request(app)
+      .get("/api/payroll")
+      .set("Cookie", `token=${token}`);
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual([]);
@@ -86,7 +112,13 @@ describe("GET /api/payroll", () => {
       new Error(payrollErrors.dbDown),
     );
 
-    const response = await request(app).get("/api/payroll");
+    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    const response = await request(app)
+      .get("/api/payroll")
+      .set("Cookie", `token=${token}`);
 
     expect(response.status).toBe(500);
     expect(response.body).toEqual({
@@ -102,9 +134,13 @@ describe("GET /api/payroll/:employeeId", () => {
 
     querySpy.mockResolvedValueOnce([employeePayrollHistory]);
 
-    const response = await request(app).get(
-      `/api/payroll/${payrollIds.employeeId}`,
-    );
+    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    const response = await request(app)
+      .get(`/api/payroll/${payrollIds.employeeId}`)
+      .set("Cookie", `token=${token}`);
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual(employeePayrollHistory);
@@ -113,9 +149,13 @@ describe("GET /api/payroll/:employeeId", () => {
   it("returns an empty array when the employee has no payroll history", async () => {
     vi.spyOn(db, "query").mockResolvedValueOnce([[]]);
 
-    const response = await request(app).get(
-      `/api/payroll/${payrollIds.missingEmployeeId}`,
-    );
+    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    const response = await request(app)
+      .get(`/api/payroll/${payrollIds.missingEmployeeId}`)
+      .set("Cookie", `token=${token}`);
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual([]);
@@ -126,9 +166,13 @@ describe("GET /api/payroll/:employeeId", () => {
       new Error(payrollErrors.dbDown),
     );
 
-    const response = await request(app).get(
-      `/api/payroll/${payrollIds.employeeId}`,
-    );
+    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    const response = await request(app)
+      .get(`/api/payroll/${payrollIds.employeeId}`)
+      .set("Cookie", `token=${token}`);
 
     expect(response.status).toBe(500);
     expect(response.body).toEqual({

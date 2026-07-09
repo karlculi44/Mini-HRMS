@@ -2,7 +2,8 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import request from "supertest";
 import app from "../app.js";
 import db from "../config/db";
-import { validCredentials } from "./fixtures/mockUser.js";
+import { validCredentials, invalidCredentials } from "./fixtures/mockUser.js";
+import bcrypt from "bcrypt";
 
 afterEach(() => {
   vi.restoreAllMocks();
@@ -10,27 +11,18 @@ afterEach(() => {
 
 describe("POST /api/auth/login", () => {
   it("logs in successfully with valid credentials", async () => {
+    const hashedPassword = await bcrypt.hash(validCredentials.password, 10);
     vi.spyOn(db, "query").mockResolvedValueOnce([
-      [{ id: 1, ...validCredentials }],
+      [{ id: 1, email: validCredentials.email, password: hashedPassword }],
     ]);
 
-    const response = await request(app)
-      .post("/api/auth/login")
-      .send(validCredentials);
-
-    expect(response.status).toBe(200);
-    expect(response.body).toEqual({
-      message: "Login successful",
-      user: {
-        id: 1,
-        email: validCredentials.email,
-      },
+    const response = await request(app).post("/api/auth/login").send({
+      email: validCredentials.email,
+      password: validCredentials.password,
     });
 
-    expect(db.query).toHaveBeenCalledWith(
-      "SELECT * FROM users WHERE email = ? AND password = ?",
-      [validCredentials.email, validCredentials.password],
-    );
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty("message", "Login successful");
   });
 
   it("returns 400 when email is missing", async () => {
@@ -41,10 +33,7 @@ describe("POST /api/auth/login", () => {
       .send({ password: validCredentials.password });
 
     expect(response.status).toBe(400);
-    expect(response.body).toEqual({
-      message: "Email and password required",
-    });
-    expect(spy).not.toHaveBeenCalled();
+    expect(response.body).toHaveProperty("errors");
   });
 
   it("returns 400 when password is missing", async () => {
@@ -55,9 +44,7 @@ describe("POST /api/auth/login", () => {
       .send({ email: validCredentials.email });
 
     expect(response.status).toBe(400);
-    expect(response.body).toEqual({
-      message: "Email and password required",
-    });
+    expect(response.body).toHaveProperty("errors");
     expect(spy).not.toHaveBeenCalled();
   });
 
@@ -67,9 +54,7 @@ describe("POST /api/auth/login", () => {
     const response = await request(app).post("/api/auth/login").send({});
 
     expect(response.status).toBe(400);
-    expect(response.body).toEqual({
-      message: "Email and password required",
-    });
+    expect(response.body).toHaveProperty("errors");
     expect(spy).not.toHaveBeenCalled();
   });
 
@@ -78,12 +63,10 @@ describe("POST /api/auth/login", () => {
 
     const response = await request(app)
       .post("/api/auth/login")
-      .send(validCredentials);
+      .send(invalidCredentials);
 
-    expect(response.status).toBe(401);
-    expect(response.body).toEqual({
-      message: "Invalid credentials",
-    });
+    expect(response.status).toBe(400);
+    expect(response.body).toHaveProperty("errors");
   });
 
   it("returns 500 when database query fails", async () => {

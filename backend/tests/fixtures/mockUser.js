@@ -1,4 +1,9 @@
 export const validCredentials = {
-  email: "admin@test.com",
+  email: "testUser1@example.com",
   password: "password123",
+};
+
+export const invalidCredentials = {
+  email: "",
+  password: "short",
 };
