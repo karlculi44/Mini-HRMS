@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { employeeList } from "../fixtures/mockEmployees";
+import { employeeList } from "../tests/fixtures/mockEmployees";
 
 const generateToken = (employeeId) => {
   const token = jwt.sign({ id: employeeId }, process.env.JWT_SECRET, {
