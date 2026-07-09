@@ -10,8 +10,8 @@ import {
   payrollMessages,
   salaryRecord,
 } from "./fixtures/mockPayroll";
+import generateToken from "./utils/generateToken";
 import { employeeList } from "./fixtures/mockEmployees";
-import jwt from "jsonwebtoken";
 
 afterEach(() => {
   vi.restoreAllMocks();
@@ -24,9 +24,7 @@ describe("POST /api/payroll/:employeeId", () => {
     querySpy.mockResolvedValueOnce([[salaryRecord]]);
     querySpy.mockResolvedValueOnce([{ insertId: 1 }]);
 
-    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
+    const token = generateToken(employeeList[0].id);
 
     const response = await request(app)
       .post(`/api/payroll/${payrollIds.employeeId}`)
@@ -41,9 +39,7 @@ describe("POST /api/payroll/:employeeId", () => {
   it("returns 404 when the salary record is not found", async () => {
     vi.spyOn(db, "query").mockResolvedValueOnce([[]]);
 
-    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
+    const token = generateToken(employeeList[0].id);
 
     const response = await request(app)
       .post(`/api/payroll/${payrollIds.missingEmployeeId}`)
@@ -60,9 +56,7 @@ describe("POST /api/payroll/:employeeId", () => {
       new Error(payrollErrors.dbDown),
     );
 
-    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
+    const token = generateToken(employeeList[0].id);
 
     const response = await request(app)
       .post(`/api/payroll/${payrollIds.employeeId}`)
@@ -80,9 +74,7 @@ describe("GET /api/payroll", () => {
   it("returns all payroll records", async () => {
     vi.spyOn(db, "query").mockResolvedValueOnce([payrollList]);
 
-    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
+    const token = generateToken(employeeList[0].id);
 
     const response = await request(app)
       .get("/api/payroll")
@@ -95,9 +87,7 @@ describe("GET /api/payroll", () => {
   it("returns an empty array when there are no payroll records", async () => {
     vi.spyOn(db, "query").mockResolvedValueOnce([[]]);
 
-    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
+    const token = generateToken(employeeList[0].id);
 
     const response = await request(app)
       .get("/api/payroll")
@@ -112,9 +102,7 @@ describe("GET /api/payroll", () => {
       new Error(payrollErrors.dbDown),
     );
 
-    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
+    const token = generateToken(employeeList[0].id);
 
     const response = await request(app)
       .get("/api/payroll")
@@ -134,9 +122,7 @@ describe("GET /api/payroll/:employeeId", () => {
 
     querySpy.mockResolvedValueOnce([employeePayrollHistory]);
 
-    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
+    const token = generateToken(employeeList[0].id);
 
     const response = await request(app)
       .get(`/api/payroll/${payrollIds.employeeId}`)
@@ -149,9 +135,7 @@ describe("GET /api/payroll/:employeeId", () => {
   it("returns an empty array when the employee has no payroll history", async () => {
     vi.spyOn(db, "query").mockResolvedValueOnce([[]]);
 
-    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
+    const token = generateToken(employeeList[0].id);
 
     const response = await request(app)
       .get(`/api/payroll/${payrollIds.missingEmployeeId}`)
@@ -166,9 +150,7 @@ describe("GET /api/payroll/:employeeId", () => {
       new Error(payrollErrors.dbDown),
     );
 
-    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
+    const token = generateToken(employeeList[0].id);
 
     const response = await request(app)
       .get(`/api/payroll/${payrollIds.employeeId}`)

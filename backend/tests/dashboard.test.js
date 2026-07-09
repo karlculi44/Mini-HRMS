@@ -9,7 +9,7 @@ import {
   expectedDashboardStats,
 } from "./fixtures/mockDashboard";
 import { employeeList } from "./fixtures/mockEmployees";
-import jwt from "jsonwebtoken";
+import generateToken from "./utils/generateToken";
 
 afterEach(() => {
   vi.restoreAllMocks();
@@ -23,9 +23,7 @@ describe("GET /api/dashboard", () => {
       querySpy.mockResolvedValueOnce(result);
     });
 
-    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
+    const token = generateToken(employeeList[0].id);
 
     const response = await request(app)
       .get("/api/dashboard")
@@ -42,9 +40,7 @@ describe("GET /api/dashboard", () => {
       querySpy.mockResolvedValueOnce(result);
     });
 
-    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
+    const token = generateToken(employeeList[0].id);
 
     const response = await request(app)
       .get("/api/dashboard")
@@ -66,9 +62,7 @@ describe("GET /api/dashboard", () => {
     dashboardQueryMocks.zeroData.forEach((result) => {
       querySpy.mockResolvedValueOnce(result);
     });
-    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
+    const token = generateToken(employeeList[0].id);
 
     const response = await request(app)
       .get("/api/dashboard")
@@ -91,9 +85,7 @@ describe("GET /api/dashboard", () => {
       querySpy.mockResolvedValueOnce(result);
     });
 
-    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
+    const token = generateToken(employeeList[0].id);
 
     const response = await request(app)
       .get("/api/dashboard")
@@ -116,9 +108,7 @@ describe("GET /api/dashboard", () => {
       querySpy.mockResolvedValueOnce(result);
     });
 
-    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
+    const token = generateToken(employeeList[0].id);
 
     const response = await request(app)
       .get("/api/dashboard")
@@ -139,9 +129,7 @@ describe("GET /api/dashboard", () => {
       new Error(dashboardErrors.dbDown),
     );
 
-    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
+    const token = generateToken(employeeList[0].id);
 
     const response = await request(app)
       .get("/api/dashboard")

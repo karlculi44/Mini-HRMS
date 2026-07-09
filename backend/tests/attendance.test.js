@@ -12,7 +12,7 @@ import {
   updatedAttendancePayload,
 } from "./fixtures/mockAttendance";
 import { employeeList } from "./fixtures/mockEmployees";
-import jwt from "jsonwebtoken";
+import generateToken from "./utils/generateToken";
 
 afterEach(() => {
   vi.restoreAllMocks();
@@ -22,9 +22,7 @@ describe("GET /api/attendance", () => {
   it("returns all attendance records", async () => {
     vi.spyOn(db, "query").mockResolvedValueOnce([attendanceList]);
 
-    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
+    const token = generateToken(employeeList[0].id);
 
     const response = await request(app)
       .get("/api/attendance")
@@ -37,9 +35,7 @@ describe("GET /api/attendance", () => {
   it("returns an empty array when no attendance records exist", async () => {
     vi.spyOn(db, "query").mockResolvedValueOnce([[]]);
 
-    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
+    const token = generateToken(employeeList[0].id);
 
     const response = await request(app)
       .get("/api/attendance")
@@ -54,9 +50,7 @@ describe("GET /api/attendance", () => {
       new Error(attendanceErrors.dbDown),
     );
 
-    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
+    const token = generateToken(employeeList[0].id);
 
     const response = await request(app)
       .get("/api/attendance")
@@ -77,9 +71,7 @@ describe("GET /api/attendance/:employeeId", () => {
     querySpy.mockResolvedValueOnce([[{ id: attendanceIds.employeeId }]]);
     querySpy.mockResolvedValueOnce([attendanceList]);
 
-    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
+    const token = generateToken(employeeList[0].id);
 
     const response = await request(app)
       .get(`/api/attendance/${attendanceIds.employeeId}`)
@@ -92,9 +84,7 @@ describe("GET /api/attendance/:employeeId", () => {
   it("returns 404 when employee is not found", async () => {
     vi.spyOn(db, "query").mockResolvedValueOnce([[]]);
 
-    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
+    const token = generateToken(employeeList[0].id);
 
     const response = await request(app)
       .get(`/api/attendance/${attendanceIds.missingEmployeeId}`)
@@ -111,9 +101,7 @@ describe("GET /api/attendance/:employeeId", () => {
       new Error(attendanceErrors.dbDown),
     );
 
-    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
+    const token = generateToken(employeeList[0].id);
 
     const response = await request(app)
       .get(`/api/attendance/${attendanceIds.employeeId}`)
@@ -133,9 +121,7 @@ describe("POST /api/attendance", () => {
     querySpy.mockResolvedValueOnce([[{ id: attendancePayload.employee_id }]]);
     querySpy.mockResolvedValueOnce([{ insertId: attendanceIds.attendanceId }]);
 
-    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
+    const token = generateToken(employeeList[0].id);
 
     const response = await request(app)
       .post("/api/attendance")
@@ -152,9 +138,7 @@ describe("POST /api/attendance", () => {
   it("returns 404 when recording attendance for a missing employee", async () => {
     vi.spyOn(db, "query").mockResolvedValueOnce([[]]);
 
-    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
+    const token = generateToken(employeeList[0].id);
 
     const response = await request(app)
       .post("/api/attendance")
@@ -175,9 +159,7 @@ describe("POST /api/attendance", () => {
       new Error(attendanceErrors.dbDown),
     );
 
-    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
+    const token = generateToken(employeeList[0].id);
 
     const response = await request(app)
       .post("/api/attendance")
@@ -202,9 +184,7 @@ describe("PUT /api/attendance/:attendanceId", () => {
     ]);
     querySpy.mockResolvedValueOnce([{ affectedRows: 1 }]);
 
-    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
+    const token = generateToken(employeeList[0].id);
 
     const response = await request(app)
       .put(`/api/attendance/${attendanceIds.attendanceId}`)
@@ -220,9 +200,7 @@ describe("PUT /api/attendance/:attendanceId", () => {
   it("returns 404 when attendance record is not found", async () => {
     vi.spyOn(db, "query").mockResolvedValueOnce([[]]);
 
-    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
+    const token = generateToken(employeeList[0].id);
 
     const response = await request(app)
       .put(`/api/attendance/${attendanceIds.missingAttendanceId}`)
@@ -241,9 +219,7 @@ describe("PUT /api/attendance/:attendanceId", () => {
     querySpy.mockResolvedValueOnce([[{ id: attendanceIds.attendanceId }]]);
     querySpy.mockResolvedValueOnce([[]]);
 
-    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
+    const token = generateToken(employeeList[0].id);
 
     const response = await request(app)
       .put(`/api/attendance/${attendanceIds.attendanceId}`)
@@ -264,9 +240,7 @@ describe("PUT /api/attendance/:attendanceId", () => {
       new Error(attendanceErrors.dbDown),
     );
 
-    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
+    const token = generateToken(employeeList[0].id);
 
     const response = await request(app)
       .put(`/api/attendance/${attendanceIds.attendanceId}`)
