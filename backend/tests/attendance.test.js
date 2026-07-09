@@ -11,6 +11,8 @@ import {
   attendanceRecord,
   updatedAttendancePayload,
 } from "./fixtures/mockAttendance";
+import { employeeList } from "./fixtures/mockEmployees";
+import jwt from "jsonwebtoken";
 
 afterEach(() => {
   vi.restoreAllMocks();
@@ -20,7 +22,13 @@ describe("GET /api/attendance", () => {
   it("returns all attendance records", async () => {
     vi.spyOn(db, "query").mockResolvedValueOnce([attendanceList]);
 
-    const response = await request(app).get("/api/attendance");
+    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    const response = await request(app)
+      .get("/api/attendance")
+      .set("Cookie", `token=${token}`);
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual(attendanceList);
@@ -29,7 +37,13 @@ describe("GET /api/attendance", () => {
   it("returns an empty array when no attendance records exist", async () => {
     vi.spyOn(db, "query").mockResolvedValueOnce([[]]);
 
-    const response = await request(app).get("/api/attendance");
+    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    const response = await request(app)
+      .get("/api/attendance")
+      .set("Cookie", `token=${token}`);
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual([]);
@@ -40,7 +54,13 @@ describe("GET /api/attendance", () => {
       new Error(attendanceErrors.dbDown),
     );
 
-    const response = await request(app).get("/api/attendance");
+    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    const response = await request(app)
+      .get("/api/attendance")
+      .set("Cookie", `token=${token}`);
 
     expect(response.status).toBe(500);
     expect(response.body).toEqual({
@@ -57,9 +77,13 @@ describe("GET /api/attendance/:employeeId", () => {
     querySpy.mockResolvedValueOnce([[{ id: attendanceIds.employeeId }]]);
     querySpy.mockResolvedValueOnce([attendanceList]);
 
-    const response = await request(app).get(
-      `/api/attendance/${attendanceIds.employeeId}`,
-    );
+    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    const response = await request(app)
+      .get(`/api/attendance/${attendanceIds.employeeId}`)
+      .set("Cookie", `token=${token}`);
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual(attendanceList);
@@ -68,9 +92,13 @@ describe("GET /api/attendance/:employeeId", () => {
   it("returns 404 when employee is not found", async () => {
     vi.spyOn(db, "query").mockResolvedValueOnce([[]]);
 
-    const response = await request(app).get(
-      `/api/attendance/${attendanceIds.missingEmployeeId}`,
-    );
+    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    const response = await request(app)
+      .get(`/api/attendance/${attendanceIds.missingEmployeeId}`)
+      .set("Cookie", `token=${token}`);
 
     expect(response.status).toBe(404);
     expect(response.body).toEqual({
@@ -83,10 +111,13 @@ describe("GET /api/attendance/:employeeId", () => {
       new Error(attendanceErrors.dbDown),
     );
 
-    const response = await request(app).get(
-      `/api/attendance/${attendanceIds.employeeId}`,
-    );
+    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
 
+    const response = await request(app)
+      .get(`/api/attendance/${attendanceIds.employeeId}`)
+      .set("Cookie", `token=${token}`);
     expect(response.status).toBe(500);
     expect(response.body).toEqual({
       message: attendanceMessages.fetchFailed,
@@ -102,8 +133,13 @@ describe("POST /api/attendance", () => {
     querySpy.mockResolvedValueOnce([[{ id: attendancePayload.employee_id }]]);
     querySpy.mockResolvedValueOnce([{ insertId: attendanceIds.attendanceId }]);
 
+    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
     const response = await request(app)
       .post("/api/attendance")
+      .set("Cookie", `token=${token}`)
       .send(attendancePayload);
 
     expect(response.status).toBe(201);
@@ -116,8 +152,13 @@ describe("POST /api/attendance", () => {
   it("returns 404 when recording attendance for a missing employee", async () => {
     vi.spyOn(db, "query").mockResolvedValueOnce([[]]);
 
+    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
     const response = await request(app)
       .post("/api/attendance")
+      .set("Cookie", `token=${token}`)
       .send({
         ...attendancePayload,
         employee_id: attendanceIds.missingEmployeeId,
@@ -134,8 +175,13 @@ describe("POST /api/attendance", () => {
       new Error(attendanceErrors.dbDown),
     );
 
+    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
     const response = await request(app)
       .post("/api/attendance")
+      .set("Cookie", `token=${token}`)
       .send(attendancePayload);
 
     expect(response.status).toBe(500);
@@ -156,8 +202,13 @@ describe("PUT /api/attendance/:attendanceId", () => {
     ]);
     querySpy.mockResolvedValueOnce([{ affectedRows: 1 }]);
 
+    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
     const response = await request(app)
       .put(`/api/attendance/${attendanceIds.attendanceId}`)
+      .set("Cookie", `token=${token}`)
       .send(updatedAttendancePayload);
 
     expect(response.status).toBe(200);
@@ -169,8 +220,13 @@ describe("PUT /api/attendance/:attendanceId", () => {
   it("returns 404 when attendance record is not found", async () => {
     vi.spyOn(db, "query").mockResolvedValueOnce([[]]);
 
+    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
     const response = await request(app)
       .put(`/api/attendance/${attendanceIds.missingAttendanceId}`)
+      .set("Cookie", `token=${token}`)
       .send(updatedAttendancePayload);
 
     expect(response.status).toBe(404);
@@ -185,8 +241,13 @@ describe("PUT /api/attendance/:attendanceId", () => {
     querySpy.mockResolvedValueOnce([[{ id: attendanceIds.attendanceId }]]);
     querySpy.mockResolvedValueOnce([[]]);
 
+    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
     const response = await request(app)
       .put(`/api/attendance/${attendanceIds.attendanceId}`)
+      .set("Cookie", `token=${token}`)
       .send({
         ...updatedAttendancePayload,
         employee_id: attendanceIds.missingEmployeeId,
@@ -203,8 +264,13 @@ describe("PUT /api/attendance/:attendanceId", () => {
       new Error(attendanceErrors.dbDown),
     );
 
+    const token = jwt.sign({ id: employeeList[0].id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
     const response = await request(app)
       .put(`/api/attendance/${attendanceIds.attendanceId}`)
+      .set("Cookie", `token=${token}`)
       .send(updatedAttendancePayload);
 
     expect(response.status).toBe(500);
