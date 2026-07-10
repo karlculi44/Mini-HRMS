@@ -7,6 +7,7 @@ import attendanceRoutes from "./routes/attendance.js";
 import payrollRoutes from "./routes/payroll.js";
 import dashboardRoutes from "./routes/dashboard.js";
 import cookieParser from "cookie-parser";
+import errorHandler from "./middlewares/errorHandler.js";
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use("/api/salaries", salaryRoutes);
 app.use("/api/attendance", attendanceRoutes);
 app.use("/api/payroll", payrollRoutes);
 app.use("/api/dashboard", dashboardRoutes);
+app.use(errorHandler);
 
 app.get("/", (req, res) => {
   res.json({ message: "HRMS API running" });
