@@ -11,16 +11,7 @@ import {
 
 //GET ALL ATTENDANCE
 export const getAllAttendance = asyncHandler(async (req, res) => {
-  const [attendance] = await db.query(`
-  SELECT
-    a.*,
-    DATE_FORMAT(a.attendance_date, '%Y-%m-%d') AS attendance_date,
-    e.full_name
-  FROM attendance a
-  JOIN employees e
-    ON a.employee_id = e.id
-  ORDER BY a.attendance_date DESC
-`);
+  const attendance = await findAllAttendance();
 
   return res.json(attendance);
 });
