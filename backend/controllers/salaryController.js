@@ -1,18 +1,17 @@
-import db from "../config/db.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import AppError from "../utils/AppError.js";
+import {
+  createSalary,
+  findAllSalaries,
+  findEmployeeByIdForSalary,
+  findExistingSalaryByEmployeeId,
+  findSalaryByEmployeeId,
+  updateSalaryByEmployeeId,
+} from "../models/salaryModel.js";
 
 //GET ALL SALARIES
 export const getSalaries = asyncHandler(async (req, res, next) => {
-  const [salaries] = await db.query(`
-      SELECT
-        s.*,
-        e.full_name
-      FROM salaries s
-      JOIN employees e
-        ON s.employee_id = e.id
-      ORDER BY s.id ASC
-    `);
+  const salaries = await findAllSalaries();
 
   return res.json(salaries);
 });
@@ -21,18 +20,7 @@ export const getSalaries = asyncHandler(async (req, res, next) => {
 export const getSalaryByEmployeeId = asyncHandler(async (req, res, next) => {
   const { employeeId } = req.params;
 
-  const [salary] = await db.query(
-    `
-      SELECT
-        s.*,
-        e.full_name
-      FROM salaries s
-      JOIN employees e
-        ON s.employee_id = e.id
-      WHERE s.employee_id = ?
-      `,
-    [employeeId],
-  );
+  const salary = await findSalaryByEmployeeId(employeeId);
 
   if (salary.length === 0) {
     throw new AppError("Salary record not found", 404);
@@ -48,31 +36,21 @@ export const saveSalary = asyncHandler(async (req, res, next) => {
   const net_salary =
     Number(basic_salary) + Number(allowance) - Number(deductions);
 
-  const [employee] = await db.query("SELECT * FROM employees WHERE id = ?", [
-    employee_id,
-  ]);
+  const employee = await findEmployeeByIdForSalary(employee_id);
 
-  const [existingSalary] = await db.query(
-    "SELECT * FROM salaries WHERE employee_id = ?",
-    [employee_id],
-  );
+  const existingSalary = await findExistingSalaryByEmployeeId(employee_id);
 
   if (employee.length === 0) {
     throw new AppError("Employee not found", 404);
   }
 
   if (existingSalary.length > 0) {
-    await db.query(
-      `
-        UPDATE salaries
-        SET
-          basic_salary = ?,
-          allowance = ?,
-          deductions = ?,
-          net_salary = ?
-        WHERE employee_id = ?
-        `,
-      [basic_salary, allowance, deductions, net_salary, employee_id],
+    await updateSalaryByEmployeeId(
+      employee_id,
+      basic_salary,
+      allowance,
+      deductions,
+      net_salary,
     );
 
     return res.json({
@@ -80,19 +58,12 @@ export const saveSalary = asyncHandler(async (req, res, next) => {
     });
   }
 
-  await db.query(
-    `
-      INSERT INTO salaries
-      (
-        employee_id,
-        basic_salary,
-        allowance,
-        deductions,
-        net_salary
-      )
-      VALUES (?, ?, ?, ?, ?)
-      `,
-    [employee_id, basic_salary, allowance, deductions, net_salary],
+  await createSalary(
+    employee_id,
+    basic_salary,
+    allowance,
+    deductions,
+    net_salary,
   );
 
   return res.status(201).json({

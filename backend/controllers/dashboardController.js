@@ -1,29 +1,19 @@
-import db from "../config/db.js";
-import AppError from "../utils/AppError.js";
 import asyncHandler from "../utils/asyncHandler.js";
+import {
+  getActiveEmployeesCount,
+  getEmployeesOnLeaveCount,
+  getTotalEmployeesCount,
+  getTotalMonthlyPayrollSum,
+} from "../models/dashboardModel.js";
 
 export const getDashboardStats = asyncHandler(async (req, res, next) => {
-  const [[totalEmployees]] = await db.query(`
-      SELECT COUNT(*) AS totalEmployees
-      FROM employees
-    `);
+  const totalEmployees = await getTotalEmployeesCount();
 
-  const [[activeEmployees]] = await db.query(`
-      SELECT COUNT(*) AS activeEmployees
-      FROM employees
-      WHERE employment_status = 'Active'
-    `);
+  const activeEmployees = await getActiveEmployeesCount();
 
-  const [[employeesOnLeave]] = await db.query(`
-      SELECT COUNT(*) AS employeesOnLeave
-      FROM employees
-      WHERE employment_status = 'On Leave'
-    `);
+  const employeesOnLeave = await getEmployeesOnLeaveCount();
 
-  const [[totalMonthlyPayroll]] = await db.query(`
-      SELECT COALESCE(SUM(net_salary), 0) AS totalMonthlyPayroll
-      FROM salaries
-    `);
+  const totalMonthlyPayroll = await getTotalMonthlyPayrollSum();
 
   res.json([
     {
