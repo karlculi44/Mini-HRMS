@@ -7,3 +7,7 @@ export const invalidCredentials = {
   email: "",
   password: "short",
 };
+
+export const authErrors = {
+  dbDown: "DB down",
+};

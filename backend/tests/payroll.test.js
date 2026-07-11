@@ -64,8 +64,7 @@ describe("POST /api/payroll/:employeeId", () => {
 
     expect(response.status).toBe(500);
     expect(response.body).toEqual({
-      message: payrollMessages.failedGenerate,
-      error: payrollErrors.dbDown,
+      message: payrollErrors.dbDown,
     });
   });
 });
@@ -110,8 +109,7 @@ describe("GET /api/payroll", () => {
 
     expect(response.status).toBe(500);
     expect(response.body).toEqual({
-      message: payrollMessages.failedFetch,
-      error: payrollErrors.dbDown,
+      message: payrollErrors.dbDown,
     });
   });
 });
@@ -158,8 +156,7 @@ describe("GET /api/payroll/:employeeId", () => {
 
     expect(response.status).toBe(500);
     expect(response.body).toEqual({
-      message: payrollMessages.failedFetchHistory,
-      error: payrollErrors.dbDown,
+      message: payrollErrors.dbDown,
     });
   });
 });

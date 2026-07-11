@@ -10,6 +10,7 @@ import {
   employeeList,
   emptyEmployeeArray,
   mockEmployee,
+  employeeErrors,
 } from "./fixtures/mockEmployees";
 import generateToken from "./utils/generateToken";
 
@@ -67,7 +68,9 @@ describe("GET /employees", () => {
   });
 
   it("returns 500 when fetching employees fails", async () => {
-    vi.spyOn(db, "query").mockRejectedValueOnce(new Error("DB down"));
+    vi.spyOn(db, "query").mockRejectedValueOnce(
+      new Error(employeeErrors.dbDown),
+    );
 
     const token = generateToken(employeeList[0].id);
 
@@ -78,8 +81,7 @@ describe("GET /employees", () => {
     expect(response.status).toBe(500);
     expect(response.body).toEqual(
       expect.objectContaining({
-        message: employeeMessages.failedFetchAll,
-        error: "DB down",
+        message: employeeErrors.dbDown,
       }),
     );
   });
@@ -112,7 +114,9 @@ describe("GET /employees/:id", () => {
   });
 
   it("returns 500 when fetching employee by ID fails", async () => {
-    vi.spyOn(db, "query").mockRejectedValueOnce(new Error("DB down"));
+    vi.spyOn(db, "query").mockRejectedValueOnce(
+      new Error(employeeErrors.dbDown),
+    );
 
     const token = generateToken(employeeList[0].id);
 
@@ -123,8 +127,7 @@ describe("GET /employees/:id", () => {
     expect(response.status).toBe(500);
     expect(response.body).toEqual(
       expect.objectContaining({
-        message: employeeMessages.failedFetchOne,
-        error: "DB down",
+        message: employeeErrors.dbDown,
       }),
     );
   });
@@ -186,7 +189,9 @@ describe("POST /employees", () => {
   });
 
   it("returns 500 when creating employee fails", async () => {
-    vi.spyOn(db, "query").mockRejectedValueOnce(new Error("DB down"));
+    vi.spyOn(db, "query").mockRejectedValueOnce(
+      new Error(employeeErrors.dbDown),
+    );
     const token = generateToken(employeeList[0].id);
 
     const response = await request(app)
@@ -197,8 +202,7 @@ describe("POST /employees", () => {
     expect(response.status).toBe(500);
     expect(response.body).toEqual(
       expect.objectContaining({
-        message: employeeMessages.failedCreate,
-        error: "DB down",
+        message: employeeErrors.dbDown,
       }),
     );
   });
@@ -249,7 +253,9 @@ describe("PUT /employees/:id", () => {
   });
 
   it("returns 500 when updating employee fails", async () => {
-    vi.spyOn(db, "query").mockRejectedValueOnce(new Error("DB down"));
+    vi.spyOn(db, "query").mockRejectedValueOnce(
+      new Error(employeeErrors.dbDown),
+    );
 
     const token = generateToken(employeeList[0].id);
 
@@ -262,8 +268,7 @@ describe("PUT /employees/:id", () => {
     expect(response.status).toBe(500);
     expect(response.body).toEqual(
       expect.objectContaining({
-        message: employeeMessages.failedUpdate,
-        error: "DB down",
+        message: employeeErrors.dbDown,
       }),
     );
   });
@@ -315,7 +320,9 @@ describe("DELETE /employees/:id", () => {
   });
 
   it("returns 500 when deleting employee fails", async () => {
-    vi.spyOn(db, "query").mockRejectedValueOnce(new Error("DB down"));
+    vi.spyOn(db, "query").mockRejectedValueOnce(
+      new Error(employeeErrors.dbDown),
+    );
 
     const token = generateToken(employeeList[0].id);
 
@@ -326,8 +333,7 @@ describe("DELETE /employees/:id", () => {
     expect(response.status).toBe(500);
     expect(response.body).toEqual(
       expect.objectContaining({
-        message: employeeMessages.failedDelete,
-        error: "DB down",
+        message: employeeErrors.dbDown,
       }),
     );
   });

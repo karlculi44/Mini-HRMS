@@ -138,8 +138,7 @@ describe("GET /api/dashboard", () => {
     expect(response.status).toBe(500);
     expect(response.body).toEqual(
       expect.objectContaining({
-        message: dashboardMessages.failedFetch,
-        error: dashboardErrors.dbDown,
+        message: dashboardErrors.dbDown,
       }),
     );
   });

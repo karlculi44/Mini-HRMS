@@ -1,9 +1,10 @@
 import db from "../config/db.js";
+import asyncHandler from "../utils/asyncHandler.js";
+import AppError from "../utils/AppError.js";
 
 //GET ALL ATTENDANCE
-export const getAllAttendance = async (req, res) => {
-  try {
-    const [attendance] = await db.query(`
+export const getAllAttendance = asyncHandler(async (req, res) => {
+  const [attendance] = await db.query(`
   SELECT
     a.*,
     DATE_FORMAT(a.attendance_date, '%Y-%m-%d') AS attendance_date,
@@ -14,31 +15,22 @@ export const getAllAttendance = async (req, res) => {
   ORDER BY a.attendance_date DESC
 `);
 
-    return res.json(attendance);
-  } catch (error) {
-    return res.status(500).json({
-      message: "Failed to fetch attendance",
-      error: error.message,
-    });
-  }
-};
+  return res.json(attendance);
+});
 
 //GET ATTENDACE HISTORY BY EMPLOYEE ID
-export const getAttendanceByEmployeeId = async (req, res) => {
-  try {
-    const { employeeId } = req.params;
-    const [employee] = await db.query("SELECT id FROM employees WHERE id = ?", [
-      employeeId,
-    ]);
+export const getAttendanceByEmployeeId = asyncHandler(async (req, res) => {
+  const { employeeId } = req.params;
+  const [employee] = await db.query("SELECT id FROM employees WHERE id = ?", [
+    employeeId,
+  ]);
 
-    if (employee.length === 0) {
-      return res.status(404).json({
-        message: "Employee not found",
-      });
-    }
+  if (employee.length === 0) {
+    throw new AppError("Employee not found", 404);
+  }
 
-    const [attendance] = await db.query(
-      `
+  const [attendance] = await db.query(
+    `
       SELECT
         a.*,
         e.full_name
@@ -48,43 +40,28 @@ export const getAttendanceByEmployeeId = async (req, res) => {
       WHERE a.employee_id = ?
       ORDER BY a.attendance_date DESC
       `,
-      [employeeId],
-    );
+    [employeeId],
+  );
 
-    return res.json(attendance);
-  } catch (error) {
-    return res.status(500).json({
-      message: "Failed to fetch attendance",
-      error: error.message,
-    });
-  }
-};
+  return res.json(attendance);
+});
 
 //RECORD ATTENDANCE
-export const recordAttendance = async (req, res) => {
-  try {
-    const {
-      employee_id,
-      full_name,
-      attendance_date,
-      time_in,
-      time_out,
-      status,
-    } = req.body;
+export const recordAttendance = asyncHandler(async (req, res, next) => {
+  const { employee_id, full_name, attendance_date, time_in, time_out, status } =
+    req.body;
 
-    // Validate employee exists
-    const [employee] = await db.query("SELECT id FROM employees WHERE id = ?", [
-      employee_id,
-    ]);
+  // Validate employee exists
+  const [employee] = await db.query("SELECT id FROM employees WHERE id = ?", [
+    employee_id,
+  ]);
 
-    if (employee.length === 0) {
-      return res.status(404).json({
-        message: "Employee not found",
-      });
-    }
+  if (employee.length === 0) {
+    return next(new AppError("Employee not found", 404));
+  }
 
-    const [result] = await db.query(
-      `
+  const [result] = await db.query(
+    `
       INSERT INTO attendance
       (
         employee_id,
@@ -95,51 +72,39 @@ export const recordAttendance = async (req, res) => {
       )
       VALUES (?,?,?,?,?)
       `,
-      [employee_id, attendance_date, time_in, time_out, status],
-    );
+    [employee_id, attendance_date, time_in, time_out, status],
+  );
 
-    return res.status(201).json({
-      message: "Attendance recorded successfully",
-      id: result.insertId,
-    });
-  } catch (error) {
-    return res.status(500).json({
-      message: "Failed to record attendance",
-      error: error.message,
-    });
-  }
-};
+  return res.status(201).json({
+    message: "Attendance recorded successfully",
+    id: result.insertId,
+  });
+});
 
 //UPDATE ATTENDANCE
-export const updateAttendance = async (req, res) => {
-  try {
-    const { attendanceId } = req.params;
-    const { employee_id, attendance_date, time_in, time_out, status } =
-      req.body;
+export const updateAttendance = asyncHandler(async (req, res, next) => {
+  const { attendanceId } = req.params;
+  const { employee_id, attendance_date, time_in, time_out, status } = req.body;
 
-    const [attendance] = await db.query(
-      "SELECT id FROM attendance WHERE id = ?",
-      [attendanceId],
-    );
+  const [attendance] = await db.query(
+    "SELECT id FROM attendance WHERE id = ?",
+    [attendanceId],
+  );
 
-    if (attendance.length === 0) {
-      return res.status(404).json({
-        message: "Attendance record not found",
-      });
-    }
+  if (attendance.length === 0) {
+    return next(new AppError("Attendance record not found", 404));
+  }
 
-    const [employee] = await db.query("SELECT id FROM employees WHERE id = ?", [
-      employee_id,
-    ]);
+  const [employee] = await db.query("SELECT id FROM employees WHERE id = ?", [
+    employee_id,
+  ]);
 
-    if (employee.length === 0) {
-      return res.status(404).json({
-        message: "Employee not found",
-      });
-    }
+  if (employee.length === 0) {
+    return next(new AppError("Employee not found", 404));
+  }
 
-    await db.query(
-      `
+  await db.query(
+    `
       UPDATE attendance
       SET
         employee_id = ?,
@@ -149,16 +114,10 @@ export const updateAttendance = async (req, res) => {
         status = ?
       WHERE id = ?
       `,
-      [employee_id, attendance_date, time_in, time_out, status, attendanceId],
-    );
+    [employee_id, attendance_date, time_in, time_out, status, attendanceId],
+  );
 
-    return res.json({
-      message: "Attendance updated successfully",
-    });
-  } catch (error) {
-    return res.status(500).json({
-      message: "Failed to update attendance",
-      error: error.message,
-    });
-  }
-};
+  return res.json({
+    message: "Attendance updated successfully",
+  });
+});

@@ -1,29 +1,28 @@
 import db from "../config/db.js";
+import asyncHandler from "../utils/asyncHandler.js";
+import AppError from "../utils/AppError.js";
 
 //GENERATE PAYROLL
-export const generatePayroll = async (req, res) => {
-  try {
-    const { employeeId } = req.params;
+export const generatePayroll = asyncHandler(async (req, res, next) => {
+  const { employeeId } = req.params;
 
-    const [salary] = await db.query(
-      `
+  const [salary] = await db.query(
+    `
       SELECT *
       FROM salaries
       WHERE employee_id = ?
       `,
-      [employeeId],
-    );
+    [employeeId],
+  );
 
-    if (salary.length === 0) {
-      return res.status(404).json({
-        message: "Salary record not found",
-      });
-    }
+  if (salary.length === 0) {
+    throw new AppError("Salary record not found", 404);
+  }
 
-    const { basic_salary, allowance, deductions, net_salary } = salary[0];
+  const { basic_salary, allowance, deductions, net_salary } = salary[0];
 
-    await db.query(
-      `
+  await db.query(
+    `
       INSERT INTO payroll
       (
         employee_id,
@@ -35,49 +34,35 @@ export const generatePayroll = async (req, res) => {
       )
       VALUES (?, CURDATE(), ?, ?, ?, ?)
       `,
-      [employeeId, basic_salary, allowance, deductions, net_salary],
-    );
+    [employeeId, basic_salary, allowance, deductions, net_salary],
+  );
 
-    return res.status(201).json({
-      message: "Payroll generated successfully",
-    });
-  } catch (error) {
-    return res.status(500).json({
-      message: "Failed to generate payroll",
-      error: error.message,
-    });
-  }
-};
+  return res.status(201).json({
+    message: "Payroll generated successfully",
+  });
+});
 
 //GET PAYROLL SUMMARY
-export const getPayroll = async (req, res) => {
-  try {
-    const [payroll] = await db.query(`
-      SELECT
-        p.*,
-        e.full_name
-      FROM payroll p
-      JOIN employees e
-        ON p.employee_id = e.id
-     ORDER BY p.id DESC
-    `);
+export const getPayroll = asyncHandler(async (req, res, next) => {
+  const [payroll] = await db.query(`
+    SELECT
+      p.*,
+      e.full_name
+    FROM payroll p
+    JOIN employees e
+      ON p.employee_id = e.id
+    ORDER BY p.id DESC
+  `);
 
-    return res.json(payroll);
-  } catch (error) {
-    return res.status(500).json({
-      message: "Failed to fetch payroll",
-      error: error.message,
-    });
-  }
-};
+  return res.json(payroll);
+});
 
 //GET PAYROLL HISTORY BY EMPLOYEE ID
-export const getPayrollByEmployeeId = async (req, res) => {
-  try {
-    const { employeeId } = req.params;
+export const getPayrollByEmployeeId = asyncHandler(async (req, res, next) => {
+  const { employeeId } = req.params;
 
-    const [payroll] = await db.query(
-      `
+  const [payroll] = await db.query(
+    `
       SELECT
         p.*,
         e.full_name
@@ -87,14 +72,8 @@ export const getPayrollByEmployeeId = async (req, res) => {
       WHERE p.employee_id = ?
       ORDER BY p.id DESC
       `,
-      [employeeId],
-    );
+    [employeeId],
+  );
 
-    return res.json(payroll);
-  } catch (error) {
-    return res.status(500).json({
-      message: "Failed to fetch payroll history",
-      error: error.message,
-    });
-  }
-};
+  return res.json(payroll);
+});

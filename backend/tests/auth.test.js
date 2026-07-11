@@ -1,8 +1,9 @@
+import { validCredentials, invalidCredentials } from "./fixtures/mockUser.js";
 import { afterEach, describe, expect, it, vi } from "vitest";
+import { authErrors } from "./fixtures/mockUser.js";
 import request from "supertest";
 import app from "../app.js";
 import db from "../config/db";
-import { validCredentials, invalidCredentials } from "./fixtures/mockUser.js";
 import bcrypt from "bcrypt";
 
 afterEach(() => {
@@ -70,7 +71,7 @@ describe("POST /api/auth/login", () => {
   });
 
   it("returns 500 when database query fails", async () => {
-    vi.spyOn(db, "query").mockRejectedValueOnce(new Error("DB down"));
+    vi.spyOn(db, "query").mockRejectedValueOnce(new Error(authErrors.dbDown));
 
     const response = await request(app)
       .post("/api/auth/login")
@@ -78,8 +79,7 @@ describe("POST /api/auth/login", () => {
 
     expect(response.status).toBe(500);
     expect(response.body).toEqual({
-      message: "Server error",
-      error: "DB down",
+      message: authErrors.dbDown,
     });
   });
 });

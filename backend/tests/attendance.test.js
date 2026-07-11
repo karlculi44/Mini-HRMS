@@ -58,8 +58,7 @@ describe("GET /api/attendance", () => {
 
     expect(response.status).toBe(500);
     expect(response.body).toEqual({
-      message: attendanceMessages.fetchFailed,
-      error: attendanceErrors.dbDown,
+      message: attendanceErrors.dbDown,
     });
   });
 });
@@ -108,8 +107,7 @@ describe("GET /api/attendance/:employeeId", () => {
       .set("Cookie", `token=${token}`);
     expect(response.status).toBe(500);
     expect(response.body).toEqual({
-      message: attendanceMessages.fetchFailed,
-      error: attendanceErrors.dbDown,
+      message: attendanceErrors.dbDown,
     });
   });
 });
@@ -168,8 +166,7 @@ describe("POST /api/attendance", () => {
 
     expect(response.status).toBe(500);
     expect(response.body).toEqual({
-      message: attendanceMessages.recordFailed,
-      error: attendanceErrors.dbDown,
+      message: attendanceErrors.dbDown,
     });
   });
 });
@@ -249,8 +246,7 @@ describe("PUT /api/attendance/:attendanceId", () => {
 
     expect(response.status).toBe(500);
     expect(response.body).toEqual({
-      message: attendanceMessages.updateFailed,
-      error: attendanceErrors.dbDown,
+      message: attendanceErrors.dbDown,
     });
   });
 });

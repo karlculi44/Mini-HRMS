@@ -29,7 +29,7 @@ export const employeeMessages = {
   created: "Employee added successfully",
   updated: "Employee updated successfully",
   deleted: "Employee deleted successfully",
-  invalidRequired: "Invalid input: all employee fields are required",
+  invalidRequired: "Invalid input: missing required fields",
   invalidEmail: "Invalid input: email format is invalid",
   failedFetchAll: "Failed to fetch employees",
   failedFetchOne: "Failed to fetch employee",
@@ -104,3 +104,7 @@ export const employeeList = [
 ];
 
 export const emptyEmployeeArray = [];
+
+export const employeeErrors = {
+  dbDown: "DB down",
+};
