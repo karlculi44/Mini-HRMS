@@ -108,3 +108,7 @@ export const emptyEmployeeArray = [];
 export const employeeErrors = {
   dbDown: "DB down",
 };
+
+export const employeeAuthErrors = {
+  noToken: "Access Denied. No token provided.",
+};

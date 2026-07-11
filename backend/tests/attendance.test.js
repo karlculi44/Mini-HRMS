@@ -3,6 +3,7 @@ import request from "supertest";
 import app from "../app";
 import db from "../config/db";
 import {
+  attendanceAuthErrors,
   attendanceErrors,
   attendanceIds,
   attendanceList,
@@ -19,6 +20,15 @@ afterEach(() => {
 });
 
 describe("GET /api/attendance", () => {
+  it("returns 401 when token is missing", async () => {
+    const response = await request(app).get("/api/attendance");
+
+    expect(response.status).toBe(401);
+    expect(response.body).toEqual({
+      message: attendanceAuthErrors.noToken,
+    });
+  });
+
   it("returns all attendance records", async () => {
     vi.spyOn(db, "query").mockResolvedValueOnce([attendanceList]);
 

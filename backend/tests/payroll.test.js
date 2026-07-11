@@ -3,6 +3,7 @@ import request from "supertest";
 import app from "../app";
 import db from "../config/db";
 import {
+  payrollAuthErrors,
   employeePayrollHistory,
   payrollErrors,
   payrollIds,
@@ -18,6 +19,17 @@ afterEach(() => {
 });
 
 describe("POST /api/payroll/:employeeId", () => {
+  it("returns 401 when token is missing", async () => {
+    const response = await request(app).post(
+      `/api/payroll/${payrollIds.employeeId}`,
+    );
+
+    expect(response.status).toBe(401);
+    expect(response.body).toEqual({
+      message: payrollAuthErrors.noToken,
+    });
+  });
+
   it("generates payroll for an employee with a salary record", async () => {
     const querySpy = vi.spyOn(db, "query");
 

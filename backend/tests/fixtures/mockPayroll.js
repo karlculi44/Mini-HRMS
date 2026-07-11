@@ -68,3 +68,7 @@ export const employeePayrollHistory = [
 export const payrollErrors = {
   dbDown: "DB down",
 };
+
+export const payrollAuthErrors = {
+  noToken: "Access Denied. No token provided.",
+};

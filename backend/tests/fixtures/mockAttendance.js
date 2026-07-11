@@ -59,3 +59,7 @@ export const attendanceIds = {
 export const attendanceErrors = {
   dbDown: "DB down",
 };
+
+export const attendanceAuthErrors = {
+  noToken: "Access Denied. No token provided.",
+};

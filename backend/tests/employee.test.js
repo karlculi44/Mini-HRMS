@@ -11,6 +11,7 @@ import {
   emptyEmployeeArray,
   mockEmployee,
   employeeErrors,
+  employeeAuthErrors,
 } from "./fixtures/mockEmployees";
 import generateToken from "./utils/generateToken";
 
@@ -39,6 +40,15 @@ const buildUpdatedEmployeePayload = () => {
 };
 
 describe("GET /employees", () => {
+  it("returns 401 when token is missing", async () => {
+    const response = await request(app).get("/api/employees");
+
+    expect(response.status).toBe(401);
+    expect(response.body).toEqual({
+      message: employeeAuthErrors.noToken,
+    });
+  });
+
   it("returns an array of employees", async () => {
     vi.spyOn(db, "query").mockResolvedValueOnce([employeeList]);
 

@@ -48,3 +48,7 @@ export const expectedDashboardStats = [
 export const dashboardErrors = {
   dbDown: "DB down",
 };
+
+export const dashboardAuthErrors = {
+  noToken: "Access Denied. No token provided.",
+};

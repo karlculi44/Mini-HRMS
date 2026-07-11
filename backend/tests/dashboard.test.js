@@ -3,6 +3,7 @@ import request from "supertest";
 import app from "../app";
 import db from "../config/db";
 import {
+  dashboardAuthErrors,
   dashboardErrors,
   dashboardMessages,
   dashboardQueryMocks,
@@ -16,6 +17,15 @@ afterEach(() => {
 });
 
 describe("GET /api/dashboard", () => {
+  it("returns 401 when token is missing", async () => {
+    const response = await request(app).get("/api/dashboard");
+
+    expect(response.status).toBe(401);
+    expect(response.body).toEqual({
+      message: dashboardAuthErrors.noToken,
+    });
+  });
+
   it("returns dashboard statistics with expected labels and values", async () => {
     const querySpy = vi.spyOn(db, "query");
 
